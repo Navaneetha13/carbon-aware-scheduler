@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large/raw data that the notebooks re-download or that isn't needed in the repo
+*.zip
+data/workload/bitbrains_sample/
+data/workload/NASA.swf.gz
+
+# OS
+.DS_Store
