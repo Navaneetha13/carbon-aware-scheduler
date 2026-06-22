@@ -11,5 +11,9 @@ __pycache__/
 data/workload/bitbrains_sample/
 data/workload/NASA.swf.gz
 
+# Personal prep docs (not for the public repo)
+PRESENTATION_GUIDE.md
+WHAT_WE_ACHIEVED.md
+
 # OS
 .DS_Store
