@@ -1,0 +1,10 @@
+Method,Carbon_red_mean_%,Carbon_red_std,SLA_mean_%,SLA_std,Makespan_h
+FIFO/Round-Robin (baseline),0.0,0.0,0.0,0.0,2.0
+Carbon-aware greedy (baseline),11.17,0.0,0.0,0.0,5.5
+WOA,1.83,0.91,0.0,0.0,5.1
+GWO,3.42,0.4,0.0,0.0,5.5
+PSO,8.75,0.85,11.0,2.0,10.7
+DE,9.97,1.35,12.67,3.74,13.0
+HHO,8.03,3.71,0.0,0.0,6.0
+GA,15.28,3.87,47.67,3.27,12.8
+CA-WOA,11.17,0.0,0.0,0.0,5.5
