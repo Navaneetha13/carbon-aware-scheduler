@@ -153,12 +153,85 @@ ax[0].bar(o, dfres.loc[o,"CarbonReduction_%"], color="tab:blue"); ax[0].set(titl
 ax[1].bar(dfres.index, dfres["Energy_kWh"], color="tab:purple"); ax[1].set(title="Energy (kWh) — consolidation effect", ylabel="kWh"); ax[1].tick_params(axis="x", rotation=40)
 plt.tight_layout(); plt.show()''')
 
-md("""## 9. Summary
-Against a naive (non-consolidating) baseline the smart methods cut carbon strongly, but **most of that is
-energy efficiency from consolidation**; **carbon-aware timing adds a few percent on top**, and **CA-WOA is
-best overall** (top carbon reduction, highest utilisation, zero SLA, lowest energy). Capacity overload is 0%
-here, so the simple greedy is close behind; the optimiser's edge grows on larger, more contended workloads.
-Next stages add live carbon, LSTM forecasting and battery/solar storage.""")
+md("""## 9. LSTM carbon forecasting (reactive → predictive)
+Train an **LSTM** on ~111 days of real UK carbon history to **predict future carbon intensity**, so the
+scheduler can plan toward *forecasted* clean windows. Accuracy is reported on **held-out (unseen)** data.""")
+code('''import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Input
+tf.random.set_seed(SEED)
+hist = pd.read_csv(ROOT + "/data/carbon/carbon_history.csv")["intensity"].astype(float).values
+LOOK_BACK = 48
+nte = int(len(hist)*0.2); tr, te = hist[:-nte], hist[-nte:]
+flo, fhi = tr.min(), tr.max(); fsc = lambda a:(a-flo)/(fhi-flo); fiv = lambda a:a*(fhi-flo)+flo
+def fwin(a):
+    return (np.array([a[i:i+LOOK_BACK] for i in range(len(a)-LOOK_BACK)])[...,None],
+            np.array([a[i+LOOK_BACK] for i in range(len(a)-LOOK_BACK)]))
+Xtr, ytr = fwin(fsc(tr)); fctx = fsc(np.concatenate([tr[-LOOK_BACK:], te])); Xte, yte = fwin(fctx)
+fmodel = Sequential([Input((LOOK_BACK,1)), LSTM(32), Dense(1)]); fmodel.compile("adam", "mse")
+print("Training LSTM (~1 min)..."); fmodel.fit(Xtr, ytr, epochs=20, batch_size=32, verbose=0)
+fpred = fiv(fmodel.predict(Xte, verbose=0).ravel()); ftrue = fiv(yte)
+fmae = float(np.mean(np.abs(fpred-ftrue))); print("LSTM forecast MAE on UNSEEN data: %.2f gCO2/kWh" % fmae)
+plt.figure(figsize=(11,3.5)); plt.plot(ftrue[:144], label="Actual", color="tab:red")
+plt.plot(fpred[:144], "--", label="LSTM forecast", color="tab:blue")
+plt.title("LSTM carbon forecast vs actual (held-out) — MAE %.1f gCO2/kWh" % fmae)
+plt.xlabel("half-hour slot"); plt.ylabel("gCO2/kWh"); plt.legend(); plt.tight_layout(); plt.show()''')
+
+md("""## 10. Forecast-driven vs reactive vs oracle scheduling
+Schedule the jobs three ways, each scored on the **actual** carbon: **Reactive** (run at earliest),
+**Forecast** (shift toward LSTM-predicted clean slots), **Oracle** (perfect foresight = upper bound).""")
+code('''CI_act = ftrue[-144:]; CI_for = fpred[-144:]; FH = len(CI_act)
+def fe(u): return (P_IDLE_W + (P_MAX_W-P_IDLE_W)*u)*SLOT_H/1000.0
+def real_carbon(starts):
+    return sum(fe(t["u"])*CI_act[k] for t, s in zip(tasks, starts)
+               for k in range(s, s+t["dur"]) if k < FH)/1000.0
+def fgreedy(CIv):
+    out = []
+    for t in tasks:
+        hio = max(0, min(MAX_DEFER, FH-t["dur"]-t["earliest"], t["deadline"]-t["dur"]-t["earliest"]))
+        bo, bc = 0, float("inf")
+        for o in range(hio+1):
+            c = sum(CIv[k] for k in range(t["earliest"]+o, t["earliest"]+o+t["dur"]) if k < FH)
+            if c < bc: bc, bo = c, o
+        out.append(t["earliest"]+bo)
+    return out
+react = real_carbon([t["earliest"] for t in tasks]); fore = real_carbon(fgreedy(CI_for)); orac = real_carbon(fgreedy(CI_act))
+print("Reactive %.4f | Forecast(LSTM) %.4f | Oracle %.4f  kg CO2" % (react, fore, orac))
+print("Forecast-driven captures %.0f%% of the oracle's possible saving" % (100*(react-fore)/(react-orac) if react>orac else 0))
+plt.figure(figsize=(6,4)); plt.bar(["Reactive","Forecast (LSTM)","Oracle"], [react, fore, orac],
+        color=["tab:gray","tab:green","tab:blue"]); plt.ylabel("kg CO2")
+plt.title("Carbon by scheduler (lower is better)"); plt.tight_layout(); plt.show()''')
+
+md("""## 11. Workload forecasting (predictive scaling)
+The same LSTM idea forecasts **incoming workload demand** (useful for provisioning ahead of load), trained
+on the real NASA-iPSC job-arrival series (~92 days), evaluated on unseen data.""")
+code('''_swfc = ["job","submit","wait","runtime","nproc","avg_cpu","used_mem","req_proc","req_time",
+         "req_mem","status","uid","gid","app","queue","partition","prev_job","think"]
+sw = pd.read_csv(ROOT + "/data/workload/NASA.swf", sep=r"\\s+", comment=";", header=None, names=_swfc)
+sw = sw[(sw.submit >= 0) & (sw.nproc > 0)]
+dem = np.bincount((sw.submit//3600).astype(int), weights=sw.nproc.values)
+nz = np.nonzero(dem)[0]; wl = dem[nz.min():nz.max()+1].astype(float)
+LOOK_W = 24
+nw = int(len(wl)*0.2); wtr, wte = wl[:-nw], wl[-nw:]
+wlo, whi = wtr.min(), wtr.max(); ws = lambda a:(a-wlo)/(whi-wlo+1e-9); wi = lambda a:a*(whi-wlo+1e-9)+wlo
+def wwin(a):
+    return (np.array([a[i:i+LOOK_W] for i in range(len(a)-LOOK_W)])[...,None],
+            np.array([a[i+LOOK_W] for i in range(len(a)-LOOK_W)]))
+Wtr, Wytr = wwin(ws(wtr)); wctx = ws(np.concatenate([wtr[-LOOK_W:], wte])); Wte, Wyte = wwin(wctx)
+wmodel = Sequential([Input((LOOK_W,1)), LSTM(32), Dense(1)]); wmodel.compile("adam", "mse")
+print("Training workload LSTM..."); wmodel.fit(Wtr, Wytr, epochs=20, batch_size=32, verbose=0)
+wpred = wi(wmodel.predict(Wte, verbose=0).ravel()); wtrue = wi(Wyte)
+wmae = float(np.mean(np.abs(wpred-wtrue))); print("Workload forecast MAE on UNSEEN data: %.0f procs/hour" % wmae)
+plt.figure(figsize=(11,3.5)); plt.plot(wtrue[:168], label="Actual demand", color="tab:red")
+plt.plot(wpred[:168], "--", label="LSTM forecast", color="tab:blue")
+plt.title("Workload demand forecast vs actual (held-out) — MAE %.0f procs/h" % wmae)
+plt.xlabel("hour"); plt.ylabel("processors requested"); plt.legend(); plt.tight_layout(); plt.show()''')
+
+md("""## 12. Summary
+Against a naive baseline the smart methods cut carbon strongly — **most of it from consolidation**, with
+**carbon-aware timing adding a few percent**, and **CA-WOA best overall**. An **LSTM forecasts both carbon
+intensity and workload** accurately on unseen data; the carbon forecast makes the scheduler **predictive
+rather than reactive**, and the workload forecast supports predictive scaling. Next stage: battery/solar storage.""")
 
 nb["cells"] = cells
 nb["metadata"]["kernelspec"] = {"name": "cas-venv", "display_name": "Python (cas)", "language": "python"}

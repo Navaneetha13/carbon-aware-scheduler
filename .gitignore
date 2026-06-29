@@ -17,3 +17,8 @@ WHAT_WE_ACHIEVED.md
 
 # OS
 .DS_Store
+This_Week_Explanation.docx
+THIS_WEEK_EXPLANATION.md
+src/battery_solar.py
+data/carbon/solar_3day.json
+results/battery_solar.png
