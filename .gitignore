@@ -22,3 +22,4 @@ THIS_WEEK_EXPLANATION.md
 src/battery_solar.py
 data/carbon/solar_3day.json
 results/battery_solar.png
+LSTM_FORECASTING_EXPLANATION.md

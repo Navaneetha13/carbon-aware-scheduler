@@ -275,12 +275,35 @@ plt.plot(wpred[:168], "--", label="LSTM forecast", color="tab:blue")
 plt.title("Workload demand forecast vs actual (held-out) — MAE %.0f procs/h" % wmae)
 plt.xlabel("hour"); plt.ylabel("processors requested"); plt.legend(); plt.tight_layout(); plt.show()''')
 
-md("""## 12. Summary
+md("""## 12. Does another model fit better than the LSTM?
+We benchmark the LSTM against **GRU** and **Gradient Boosting** on the same held-out carbon data.
+Lower MAE = the forecast overlaps the actual curve more tightly.""")
+code('''from tensorflow.keras.layers import GRU
+from sklearn.ensemble import GradientBoostingRegressor
+# reuse the carbon-forecast data + LSTM result from Section 9 (Xtr, ytr, Xte, ftrue, fpred, fmae, fiv)
+gru = Sequential([Input((LOOK_BACK,1)), GRU(32), Dense(1)]); gru.compile("adam","mse")
+gru.fit(Xtr, ytr, epochs=20, batch_size=32, verbose=0)
+gpred = fiv(gru.predict(Xte, verbose=0).ravel()); gmae = float(np.mean(np.abs(gpred-ftrue)))
+gbr = GradientBoostingRegressor(n_estimators=300, max_depth=3, random_state=SEED)
+gbr.fit(Xtr.reshape(len(Xtr),-1), ytr); bpred = fiv(gbr.predict(Xte.reshape(len(Xte),-1)))
+bmae = float(np.mean(np.abs(bpred-ftrue)))
+comp = pd.DataFrame({"MAE (gCO2/kWh)":[round(fmae,3), round(gmae,3), round(bmae,3)]},
+                    index=["LSTM","GRU","Gradient Boosting"]).sort_values("MAE (gCO2/kWh)")
+print(comp.to_string())
+mm = min(144, len(ftrue))
+plt.figure(figsize=(12,4)); plt.plot(ftrue[:mm], color="black", lw=2, label="Actual")
+plt.plot(fpred[:mm], "--", label="LSTM (MAE %.2f)" % fmae)
+plt.plot(bpred[:mm], ":", lw=2, label="Gradient Boosting (MAE %.2f)" % bmae)
+plt.title("Forecast model comparison (held-out) — lower MAE fits better")
+plt.xlabel("half-hour slot"); plt.ylabel("gCO2/kWh"); plt.legend(); plt.tight_layout(); plt.show()
+comp''')
+
+md("""## 13. Summary
 Against a naive baseline the smart methods cut carbon strongly — **most of it from consolidation (energy
 efficiency)**, with **carbon-aware timing adding a few percent**, and **CA-WOA best overall**. An **LSTM
 forecasts both carbon intensity and workload** accurately on unseen data; using the carbon forecast makes
-the scheduler **predictive rather than reactive**, capturing most of the saving perfect foresight would give,
-and the workload forecast supports predictive scaling. Next stage: battery/solar storage.""")
+the scheduler **predictive rather than reactive**. A model comparison shows **Gradient Boosting / GRU fit
+slightly better than the LSTM**. Next stage: battery/solar storage.""")
 
 nb["cells"] = cells
 nb["metadata"]["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}
