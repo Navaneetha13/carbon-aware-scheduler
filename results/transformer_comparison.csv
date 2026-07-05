@@ -1,0 +1,5 @@
+,MAE
+Transformer (attention),9.266
+LSTM,3.62
+GRU,3.512
+Gradient Boosting,3.509

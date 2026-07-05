@@ -1,0 +1,6 @@
+,MAE
+CNN-LSTM (CarbonCast-style),3.735
+LSTM,3.865
+GRU,3.673
+Gradient Boosting,3.509
+Ensemble (CNN-LSTM+GRU+GBR),3.385
