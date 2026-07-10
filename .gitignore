@@ -26,3 +26,9 @@ LSTM_FORECASTING_EXPLANATION.md
 DATASETS_AND_REFERENCES.md
 PROJECT_PLAN.md
 PROJECT_TIMETABLE.md
+THIS_WEEK_ENSEMBLE_EXPLANATION.md
+RESULTS_SUMMARY.md
+src/publication_sweep.py
+results/sweep_temporal.csv
+results/sweep_capacity.csv
+results/sweep_preview_capacity.png

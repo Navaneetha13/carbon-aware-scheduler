@@ -260,13 +260,40 @@ plt.title("Research-backed model vs LSTM (held-out) — lower MAE fits better")
 plt.xlabel("half-hour slot"); plt.ylabel("gCO2/kWh"); plt.legend(); plt.tight_layout(); plt.show()
 comp''')
 
-md("""## 13. Summary
+md("""## 13. Scalability — results across task counts (50–300)
+For publication, the scheduling experiments are repeated at **N = 50, 100, 200, 300 tasks** (5 seeds each)
+on the same real data. In the host-capacity model, **CA-WOA gives the highest carbon reduction with 0% SLA
+at every scale**; the methods that match it on carbon (GA/PSO/DE) only do so by violating more deadlines as
+the workload grows.""")
+code('''TC = [50, 100, 200, 300]
+SWEEP = {   # host-capacity model, mean over 5 seeds: carbon reduction % and SLA %
+ "CA-WOA": {"cr":[82.0,85.4,85.5,86.6], "sla":[0,0,0,0]},
+ "HHO":    {"cr":[81.5,84.2,85.2,86.4], "sla":[0,0,0,0]},
+ "WOA":    {"cr":[80.2,83.3,83.7,84.9], "sla":[0,0,0,0]},
+ "GWO":    {"cr":[79.6,83.2,83.7,84.9], "sla":[0,0,0,0.3]},
+ "PSO":    {"cr":[73.2,80.3,83.6,85.4], "sla":[13.2,22.4,37.8,42.2]},
+ "DE":     {"cr":[73.3,81.0,84.2,86.0], "sla":[12.8,25.0,33.0,39.5]},
+ "GA":     {"cr":[68.0,81.2,84.1,86.0], "sla":[46.8,53.4,58.0,59.0]},
+}
+fig, axs = plt.subplots(1, 2, figsize=(13,4.5))
+for name, d in SWEEP.items():
+    lw = 3 if name=="CA-WOA" else 1.3; col = "tab:green" if name=="CA-WOA" else None
+    axs[0].plot(TC, d["cr"], marker="o", lw=lw, color=col, label=name)
+    axs[1].plot(TC, d["sla"], marker="s", lw=lw, color=col, label=name)
+axs[0].set_title("Carbon reduction vs task count"); axs[0].set_xlabel("task count"); axs[0].set_ylabel("carbon reduction %")
+axs[1].set_title("SLA violations vs task count"); axs[1].set_xlabel("task count"); axs[1].set_ylabel("SLA violation %")
+for a in axs: a.set_xticks(TC); a.grid(alpha=0.3); a.legend(fontsize=8, ncol=2)
+plt.tight_layout(); plt.show()
+print("CA-WOA: 0% SLA at every task count; carbon reduction 82.0% -> 86.6% as N grows 50 -> 300")''')
+
+md("""## 14. Summary
 Against a naive baseline the smart methods cut carbon strongly — **most of it from consolidation**, with
 **carbon-aware timing adding a few percent**, and **CA-WOA best overall**. An LSTM forecasts both carbon
 and workload; the carbon forecast makes the scheduler **predictive rather than reactive**. Following the
 carbon-forecasting literature (CarbonCast, EnsembleCI), a research-backed comparison (CNN-LSTM, GRU, Gradient
 Boosting, ensemble) shows an **ensemble forecaster beats the LSTM (~13% lower error)** — the adopted model.
-Next stage: battery/solar storage.""")
+Repeated across **50–300 tasks**, CA-WOA stays best on carbon with **0% SLA at every scale**. Next stage:
+battery/solar storage.""")
 
 nb["cells"] = cells
 nb["metadata"]["kernelspec"] = {"name": "cas-venv", "display_name": "Python (cas)", "language": "python"}
