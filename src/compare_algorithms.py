@@ -61,10 +61,15 @@ def decode(x):
     return out
 
 base = evaluate([t["earliest"] for t in tasks])          # FIFO / Round-Robin baseline
+# ---- Fitness = weighted sum of normalised objectives; weights MUST sum to 1.0 ----
+ALPHA, BETA, GAMMA = 0.4, 0.3, 0.3   # carbon, SLA, cost  ->  0.4 + 0.3 + 0.3 = 1.0
+assert abs(ALPHA + BETA + GAMMA - 1.0) < 1e-9, "fitness weights must sum to 1"
 def fitness(x):
     m = evaluate(decode(x))
-    # carbon objective + strong SLA-deadline penalty (treat deadlines as near-hard constraints)
-    return 1.0*(m["Carbon_kgCO2"]/base["Carbon_kgCO2"]) + 3.0*(m["SLA_viol_%"]/100.0)
+    carbon = m["Carbon_kgCO2"] / base["Carbon_kgCO2"]
+    sla    = m["SLA_viol_%"] / 100.0
+    cost   = m["Cost_GBP"] / base["Cost_GBP"]
+    return ALPHA*carbon + BETA*sla + GAMMA*cost
 
 # ---- run each existing metaheuristic on the SAME problem ----
 ALGOS = {"GWO": GWO.OriginalGWO, "PSO": PSO.OriginalPSO, "DE": DE.OriginalDE,

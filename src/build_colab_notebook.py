@@ -148,9 +148,15 @@ md(r"""## 6. Baselines + carbon-aware scheduling
 Fitness minimised by each algorithm: $F = \frac{CO_2}{CO_2^{base}} + 3\cdot\frac{SLAV}{100} + 3\cdot\frac{overload}{100}$.""")
 code('''base = evaluate(fifo_starts, consolidate=False)        # FIFO/Round-Robin (naive placement)
 def cred(mm): return (base["Carbon_kgCO2"]-mm["Carbon_kgCO2"])/base["Carbon_kgCO2"]*100.0
+# ---- Fitness = weighted sum of THREE normalised objectives; weights MUST sum to 1.0 ----
+ALPHA, BETA, GAMMA = 0.4, 0.3, 0.3   # carbon, SLA, overload  ->  0.4 + 0.3 + 0.3 = 1.0
+assert abs(ALPHA + BETA + GAMMA - 1.0) < 1e-9, "fitness weights must sum to 1"
 def fitness(x):
     mm = evaluate(decode(x), consolidate=True)
-    return (mm["Carbon_kgCO2"]/base["Carbon_kgCO2"]) + 3.0*(mm["SLA_%"]/100.0) + 3.0*(mm["Overload_%"]/100.0)
+    carbon   = mm["Carbon_kgCO2"] / base["Carbon_kgCO2"]
+    sla      = mm["SLA_%"] / 100.0
+    overload = mm["Overload_%"] / 100.0
+    return ALPHA*carbon + BETA*sla + GAMMA*overload
 def run(model, starting=None):
     p = {"obj_func": fitness, "bounds": FloatVar(lb=[0.0]*N, ub=[1.0]*N), "minmax":"min", "log_to": None}
     g = model.solve(p, starting_solutions=starting, seed=SEED)

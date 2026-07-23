@@ -95,9 +95,16 @@ def decode(x):
     return out
 
 base = evaluate(fifo_starts, consolidate=False)         # FIFO/Round-Robin (naive placement)
+# ---- Fitness = weighted sum of normalised objectives; weights MUST sum to 1.0 ----
+#   f(x) = ALPHA*carbon + BETA*SLA + GAMMA*overload   (each divided by the FIFO baseline -> unitless)
+ALPHA, BETA, GAMMA = 0.4, 0.3, 0.3   # carbon, SLA, overload  ->  0.4 + 0.3 + 0.3 = 1.0
+assert abs(ALPHA + BETA + GAMMA - 1.0) < 1e-9, "fitness weights must sum to 1"
 def fitness(x):
     mm = evaluate(decode(x), consolidate=True)
-    return (mm["Carbon_kgCO2"]/base["Carbon_kgCO2"]) + 3.0*(mm["SLA_viol_%"]/100.0) + 3.0*(mm["Overload_%"]/100.0)
+    carbon   = mm["Carbon_kgCO2"] / base["Carbon_kgCO2"]
+    sla      = mm["SLA_viol_%"] / 100.0
+    overload = mm["Overload_%"] / 100.0
+    return ALPHA*carbon + BETA*sla + GAMMA*overload
 def cred(mm): return (base["Carbon_kgCO2"] - mm["Carbon_kgCO2"]) / base["Carbon_kgCO2"] * 100.0
 
 def greedy_carbon_starts():

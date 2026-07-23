@@ -68,9 +68,16 @@ def decode(x):
     return out
 
 base = evaluate([t["earliest"] for t in tasks])          # FIFO / Round-Robin baseline
+# ---- Fitness = weighted sum of normalised objectives; weights MUST sum to 1.0 ----
+#   f(x) = ALPHA*carbon + BETA*SLA + GAMMA*cost   (each divided by the FIFO baseline -> unitless)
+ALPHA, BETA, GAMMA = 0.4, 0.3, 0.3   # carbon, SLA, cost  ->  0.4 + 0.3 + 0.3 = 1.0
+assert abs(ALPHA + BETA + GAMMA - 1.0) < 1e-9, "fitness weights must sum to 1"
 def fitness(x):
     mm = evaluate(decode(x))
-    return (mm["Carbon_kgCO2"]/base["Carbon_kgCO2"]) + 3.0*(mm["SLA_viol_%"]/100.0)
+    carbon = mm["Carbon_kgCO2"] / base["Carbon_kgCO2"]
+    sla    = mm["SLA_viol_%"] / 100.0
+    cost   = mm["Cost_GBP"] / base["Cost_GBP"]
+    return ALPHA*carbon + BETA*sla + GAMMA*cost
 
 # ---------- CA-WOA enhancement: carbon-aware seeding ----------
 def greedy_carbon_x():

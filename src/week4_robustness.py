@@ -58,9 +58,15 @@ def decode(x):
     return out
 
 base = evaluate([t["earliest"] for t in tasks])
+# ---- Fitness = weighted sum of normalised objectives; weights MUST sum to 1.0 ----
+ALPHA, BETA, GAMMA = 0.4, 0.3, 0.3   # carbon, SLA, cost  ->  0.4 + 0.3 + 0.3 = 1.0
+assert abs(ALPHA + BETA + GAMMA - 1.0) < 1e-9, "fitness weights must sum to 1"
 def fitness(x):
     mm = evaluate(decode(x))
-    return (mm["Carbon_kgCO2"]/base["Carbon_kgCO2"]) + 3.0*(mm["SLA_viol_%"]/100.0)
+    carbon = mm["Carbon_kgCO2"] / base["Carbon_kgCO2"]
+    sla    = mm["SLA_viol_%"] / 100.0
+    cost   = mm["Cost_GBP"] / base["Cost_GBP"]
+    return ALPHA*carbon + BETA*sla + GAMMA*cost
 def cred(mm): return (base["Carbon_kgCO2"] - mm["Carbon_kgCO2"]) / base["Carbon_kgCO2"] * 100.0
 
 # ---- carbon-aware greedy baseline (each job -> greenest deadline-feasible slot) ----
