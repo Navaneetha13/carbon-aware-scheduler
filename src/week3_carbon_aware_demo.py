@@ -20,7 +20,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from mealpy import FloatVar, GWO
 
-ROOT = "/home/durga/carbon-aware-scheduler"
+import os
+# repo root = parent directory of src/ ; keeps the project runnable from any location
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEED = 42
 
 # ===================== 1. ENERGY / POWER MODEL (SPECpower-style) =====================

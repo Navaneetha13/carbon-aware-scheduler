@@ -11,7 +11,9 @@ from tensorflow.keras.layers import (Input, LSTM, GRU, Dense, Dropout, Embedding
                                       MultiHeadAttention, LayerNormalization, GlobalAveragePooling1D)
 from sklearn.ensemble import GradientBoostingRegressor
 
-ROOT = "/home/durga/carbon-aware-scheduler"
+import os
+# repo root = parent directory of src/ ; keeps the project runnable from any location
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 np.random.seed(42); tf.random.set_seed(42)
 LOOK_BACK = 48
 

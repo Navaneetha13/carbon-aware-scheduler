@@ -9,7 +9,9 @@ import numpy as np
 import pandas as pd
 from mealpy import FloatVar, WOA, GWO, PSO, DE, HHO, GA
 
-ROOT = "/home/durga/carbon-aware-scheduler"
+import os
+# repo root = parent directory of src/ ; keeps the project runnable from any location
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEEDS = [1, 2, 3, 4, 5]
 
 # ---- energy model + real carbon + real Google tasks (same as the notebook) ----

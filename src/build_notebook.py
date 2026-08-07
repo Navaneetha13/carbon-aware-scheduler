@@ -3,7 +3,9 @@
 HHO, GA) + CA-WOA, on the real Google Cluster Trace + real UK carbon. Reads data from disk."""
 import nbformat as nbf
 
-ROOT = "/home/durga/carbon-aware-scheduler"
+import os
+# repo root = parent directory of src/ ; keeps the project runnable from any location
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 nb = nbf.v4.new_notebook(); cells = []
 md = lambda s: cells.append(nbf.v4.new_markdown_cell(s))
 code = lambda s: cells.append(nbf.v4.new_code_cell(s))
@@ -23,7 +25,13 @@ code('''import json, math
 import numpy as np, pandas as pd, matplotlib.pyplot as plt
 %matplotlib inline
 from mealpy import FloatVar, WOA, GWO, PSO, DE, HHO, GA
-ROOT = "/home/durga/carbon-aware-scheduler"
+import os
+# Locate the repository root by walking up from the working directory until data/ is found.
+# (__file__ is undefined in a notebook, so the path cannot be derived from the file location.)
+ROOT = os.path.abspath(os.getcwd())
+while not os.path.isdir(os.path.join(ROOT, "data")) and os.path.dirname(ROOT) != ROOT:
+    ROOT = os.path.dirname(ROOT)
+print("Repository root:", ROOT)
 SEED = 42; np.random.seed(SEED); rng = np.random.default_rng(SEED)
 print("Mealpy ready.")''')
 

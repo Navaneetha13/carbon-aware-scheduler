@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 from mealpy import FloatVar, GWO, PSO, DE, WOA, HHO, GA
 
-ROOT = "/home/durga/carbon-aware-scheduler"; SEED = 42
+import os
+# repo root = parent directory of src/ ; keeps the project runnable from any location
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); SEED = 42
 
 # ---- energy + carbon + price (same model as before) ----
 P_IDLE_W, P_MAX_W, SLOT_H = 100.0, 250.0, 0.5
