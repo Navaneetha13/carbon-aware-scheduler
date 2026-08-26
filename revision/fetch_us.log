@@ -1,0 +1,6 @@
+fetching US-CAL (California) ...
+   CAL ... 3168 rows   CAL ... 6336 rows   CAL ... 9504 rows   CAL ... 12672 rows   CAL ... 15816 rows   CAL ... 18984 rows   CAL ... 22152 rows   CAL ... 25320 rows   CAL ... 28488 rows   CAL ... 31656 rows   CAL ... 32232 rows   US-CAL   5376 slots | 2026-02-28 -> 2026-06-19 | min 65 max 422 mean 173.0
+   saved -> /Users/durga/carbon-aware-scheduler/data/carbon/carbon_history_US-CAL.csv
+fetching US-MIDA (Mid-Atlantic) ...
+   MIDA ... 2112 rows   MIDA ... 4224 rows   MIDA ... 6336 rows   MIDA ... 8448 rows   MIDA ... 10560 rows   MIDA ... 12672 rows   MIDA ... 14784 rows   MIDA ... 16896 rows   MIDA ... 19008 rows   MIDA ... 21120 rows   MIDA ... 21504 rows   US-MIDA  5376 slots | 2026-02-28 -> 2026-06-19 | min 235 max 419 mean 333.5
+   saved -> /Users/durga/carbon-aware-scheduler/data/carbon/carbon_history_US-MIDA.csv

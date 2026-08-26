@@ -16,6 +16,13 @@ import os
 # repo root = parent directory of src/ ; keeps the project runnable from any location
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 np.random.seed(42); tf.random.set_seed(42)
+# Kernel-level determinism: without this, TF GPU kernels are nondeterministic even with a
+# fixed seed, which is why the same model previously scored differently between runs.
+# Requires TF >= 2.8; guarded so older versions still run.
+try:
+    tf.config.experimental.enable_op_determinism()
+except Exception:
+    print("note: op-determinism unavailable in this TensorFlow build; results may vary between runs")
 LOOK_BACK = 48
 
 # ---- real carbon + time features (multivariate) ----
@@ -24,7 +31,15 @@ carbon = df["intensity"].astype(float).values
 ts = pd.to_datetime(df["from"], utc=True)
 slot = ts.dt.hour.values*2 + ts.dt.minute.values//30; dow = ts.dt.dayofweek.values
 nte = int(len(carbon)*0.2); lo, hi = carbon[:-nte].min(), carbon[:-nte].max()
-csc = (carbon-lo)/(hi-lo); inv = lambda a: a*(hi-lo)+lo
+# The scaler is fitted on the TRAIN split only; fitting on the full series would leak
+# test information. Values outside the fitted range are clipped rather than extrapolated,
+# and the count is reported, so an out-of-distribution grid reading cannot pass silently.
+_scaled = (carbon-lo)/(hi-lo)
+_oob = int(((_scaled < 0.0) | (_scaled > 1.0)).sum())
+if _oob:
+    print(f"WARNING: {_oob}/{len(carbon)} readings fall outside the training range "
+          f"[{lo:.0f}, {hi:.0f}] gCO2/kWh and were clipped to it.")
+csc = np.clip(_scaled, 0.0, 1.0); inv = lambda a: a*(hi-lo)+lo
 feats = np.column_stack([csc, np.sin(2*np.pi*slot/48), np.cos(2*np.pi*slot/48),
                          np.sin(2*np.pi*dow/7), np.cos(2*np.pi*dow/7)])
 def windows(F, t):

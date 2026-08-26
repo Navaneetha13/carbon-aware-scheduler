@@ -1,0 +1,12 @@
+Comparison,Scale,Method_A,Mean_A,SD_A,Method_B,Mean_B,SD_B,Difference,t,df,p,Significant_at_0.05,Sig
+CA-WOA vs WOA (ablation),50,CA-WOA,81.98,0.12,WOA,80.16,0.49,1.82,7.22,4.5,1.26e-03,YES,**
+CA-WOA vs WOA (ablation),100,CA-WOA,85.35,0.12,WOA,83.3,0.01,2.05,34.05,4.1,3.88e-06,YES,***
+CA-WOA vs WOA (ablation),200,CA-WOA,85.54,0.07,WOA,83.74,0.12,1.8,25.91,6.4,9.35e-08,YES,***
+CA-WOA vs WOA (ablation),300,CA-WOA,86.63,0.04,WOA,84.97,0.09,1.66,33.71,5.5,1.32e-07,YES,***
+CA-WOA vs HHO,50,CA-WOA,81.98,0.12,HHO,81.61,0.51,0.37,1.41,4.4,2.24e-01,no,ns
+CA-WOA vs HHO,100,CA-WOA,85.35,0.12,HHO,84.52,0.69,0.83,2.37,4.2,7.31e-02,no,ns
+CA-WOA vs HHO,200,CA-WOA,85.54,0.07,HHO,85.16,0.62,0.38,1.22,4.1,2.89e-01,no,ns
+CA-WOA vs HHO,300,CA-WOA,86.63,0.04,HHO,86.31,0.53,0.32,1.2,4.0,2.94e-01,no,ns
+CA-WOA vs WOA (temporal model),60,CA-WOA,11.17,0.0,WOA,3.54,4.31,7.63,3.54,4.0,2.40e-02,YES,*
+CA-WOA vs HHO (temporal model),60,CA-WOA,11.17,0.0,HHO,6.94,3.42,4.23,2.47,4.0,6.87e-02,no,ns
+CA-WOA vs GWO (temporal model),60,CA-WOA,11.17,0.0,GWO,11.97,3.82,-0.8,-0.42,4.0,6.97e-01,no,ns

@@ -1,0 +1,18 @@
+{
+  "title": "Energy-Efficient and Carbon-Aware Scheduling in Cloud Computing using an Enhanced Whale Optimization Algorithm (CA-WOA): code, data and reproducibility artefacts",
+  "description": "<p>Complete reproducibility artefact for a study of carbon-aware temporal workload shifting in cloud data centres. Contains a vectorised scheduling simulator behind a 27-check validation gate that reproduces the originally published figures to machine precision, 29 experiments with one row per (configuration, method, seed) across 30 independent seeds, five real half-hourly grid carbon-intensity traces (UK, Republic of Ireland, Northern Ireland, US California, US Mid-Atlantic), and the analysis and forecasting scripts.</p><p>Includes a theoretical treatment of the constrained-scheduling baseline and a Markov-chain convergence analysis. Two experiments are deliberately retained and labelled INVALID, documenting modelling errors that were detected and corrected.</p>",
+  "upload_type": "software",
+  "license": "MIT",
+  "creators": [
+    {"name": "Thalakokkula, Navaneetha", "affiliation": "National College of Ireland"}
+  ],
+  "contributors": [
+    {"name": "Gupta, Punit", "type": "Supervisor", "affiliation": "National College of Ireland"}
+  ],
+  "keywords": [
+    "carbon-aware scheduling", "cloud computing", "whale optimization algorithm",
+    "metaheuristics", "energy efficiency", "carbon intensity forecasting",
+    "reproducibility", "Google cluster trace"
+  ],
+  "access_right": "open"
+}

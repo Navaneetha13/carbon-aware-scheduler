@@ -1,0 +1,7 @@
+fetching IE (ROI) ...
+   ROI ... 768 rows   ROI ... 1536 rows   ROI ... 2304 rows   ROI ... 3072 rows   ROI ... 3840 rows   ROI ... 4608 rows   ROI ... 5376 rows   ROI ... 6144 rows   ROI ... 6912 rows   ROI ... 7680 rows   ROI ... 8448 rows   ROI ... 9216 rows   ROI ... 9984 rows   ROI ... 10752 rows   IE   5374 half-hourly slots | 2026-02-28 -> 2026-06-19 | min 77 max 336 mean 168.6
+   saved -> /Users/durga/carbon-aware-scheduler/data/carbon/carbon_history_IE.csv
+fetching NI (NI) ...
+   NI ... 768 rows   NI ... 1536 rows   NI ... 2304 rows   NI ... 3072 rows   NI ... 3840 rows   NI ... 4608 rows   NI ... 5376 rows   NI ... 6144 rows   NI ... 6912 rows   WARN NI 2026-05-11: HTTP Error 503: Service Unavailable
+   NI ... 6912 rows   NI ... 7680 rows   NI ... 8448 rows   NI ... 9216 rows   NI ... 9984 rows   NI   4990 half-hourly slots | 2026-02-28 -> 2026-06-19 | min 47 max 444 mean 197.9
+   saved -> /Users/durga/carbon-aware-scheduler/data/carbon/carbon_history_NI.csv

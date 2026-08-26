@@ -1,0 +1,10 @@
+E24: 840 runs
+E24 done: 840 rows in 245s -> raw_E24.csv
+E25: 1704 runs
+   1000/1704  (107s)
+E25 done: 1704 rows in 189s -> raw_E25.csv
+CONV: 420 runs
+CONV done: 420 rows in 572s -> raw_CONV.csv
+E23: 1680 runs
+   1000/1680  (206s)
+E23 done: 1680 rows in 476s -> raw_E23.csv

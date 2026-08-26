@@ -1,0 +1,18 @@
+
+=== forecast coupling ===
+12 h-ahead ensemble MAE on held-out: 25.351 gCO2/kWh
+   N  M  pen scheduler  carbon_kg  red_mean  red_sd  sla    nfe
+1000 10  0.0  forecast     1.0702   86.9181  0.1017  0.0 4840.0
+1000 10  0.0    oracle     1.0239   87.4841  0.1464  0.0 4840.0
+1000 10  0.0  reactive     1.2238   85.0402  0.0000  0.0    0.0
+3000 10 10.0  forecast     3.1449   87.2589  0.0924  0.0 4840.0
+3000 10 10.0    oracle     3.1306   87.3172  0.0678  0.0 4840.0
+3000 10 10.0  reactive     3.2636   86.7783  0.0000  0.0    0.0
+3000 20  0.0  forecast     2.9630   87.9961  0.0553  0.0 4840.0
+3000 20  0.0    oracle     2.8517   88.4470  0.0516  0.0 4840.0
+3000 20  0.0  reactive     3.2636   86.7783  0.0000  0.0    0.0
+  N=1000 M=10 pen=0.0: forecast captures 99% of the oracle's saving
+  N=3000 M=10 pen=10.0: forecast captures 100% of the oracle's saving
+  N=3000 M=20 pen=0.0: forecast captures 99% of the oracle's saving
+
+Saved -> raw_F_coupling.csv, F_coupling_summary.csv

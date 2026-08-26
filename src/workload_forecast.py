@@ -17,6 +17,13 @@ import os
 # repo root = parent directory of src/ ; keeps the project runnable from any location
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 np.random.seed(42); tf.random.set_seed(42)
+# Kernel-level determinism: without this, TF kernels are nondeterministic even with a
+# fixed seed, which is why the same model previously scored differently between runs.
+# Requires TF >= 2.8; guarded so older versions still run.
+try:
+    tf.config.experimental.enable_op_determinism()
+except Exception:
+    print("note: op-determinism unavailable in this TensorFlow build; results may vary between runs")
 
 # ---- build hourly workload-demand series from the real NASA trace ----
 cols = ["job","submit","wait","runtime","nproc","avg_cpu","used_mem","req_proc","req_time",
@@ -34,7 +41,19 @@ print("Workload series: %d hourly points (%.0f days), mean demand %.1f, peak %.0
 
 LOOK_BACK = 24                                               # use past 24 h to predict next hour
 nte = int(len(series)*0.2); tr, te = series[:-nte], series[-nte:]
-lo, hi = tr.min(), tr.max(); sc = lambda a:(a-lo)/(hi-lo+1e-9); inv = lambda a:a*(hi-lo+1e-9)+lo
+lo, hi = tr.min(), tr.max()
+# The scaler is fitted on the TRAIN split only; fitting on the full series would leak
+# test information. Values outside the fitted range are clipped rather than extrapolated,
+# and the count is reported, so an out-of-distribution demand spike cannot pass silently.
+# On the current NASA trace nothing falls outside the range, so the held-out MAE is unaffected.
+def sc(a):
+    z = (np.asarray(a, dtype=float) - lo) / (hi - lo + 1e-9)
+    oob = int(((z < 0.0) | (z > 1.0)).sum())
+    if oob:
+        print("WARNING: %d/%d demand values fall outside the training range [%.0f, %.0f] "
+              "procs/h and were clipped to it." % (oob, z.size, lo, hi))
+    return np.clip(z, 0.0, 1.0)
+inv = lambda a: a*(hi-lo+1e-9)+lo
 def win(a):
     return (np.array([a[i:i+LOOK_BACK] for i in range(len(a)-LOOK_BACK)])[..., None],
             np.array([a[i+LOOK_BACK] for i in range(len(a)-LOOK_BACK)]))

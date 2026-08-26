@@ -17,6 +17,13 @@ import os
 # repo root = parent directory of src/ ; keeps the project runnable from any location
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 np.random.seed(42); tf.random.set_seed(42)
+# Kernel-level determinism: without this, TF GPU kernels are nondeterministic even with a
+# fixed seed, which is why the same model previously scored differently between runs.
+# Requires TF >= 2.8; guarded so older versions still run.
+try:
+    tf.config.experimental.enable_op_determinism()
+except Exception:
+    print("note: op-determinism unavailable in this TensorFlow build; results may vary between runs")
 LOOK_BACK = 48          # use the past 24 h (48 half-hour slots) to predict the next slot
 
 # ---- real carbon history ----

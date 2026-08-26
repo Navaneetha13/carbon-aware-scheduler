@@ -1,0 +1,9 @@
+   regions available: UK, IE, NI, US-CAL
+E26: 3600 runs
+   1000/3600  (306s)
+   2000/3600  (617s)
+   3000/3600  (943s)
+E26 done: 3600 rows in 1130s -> raw_E26.csv
+E27: 1850 runs
+   1000/1850  (236s)
+E27 done: 1850 rows in 420s -> raw_E27.csv
