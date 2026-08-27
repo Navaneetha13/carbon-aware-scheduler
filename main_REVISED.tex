@@ -635,7 +635,7 @@ standard WOA only in its carbon-aware seeding.
 Population size & 40 \\
 Evolution count (epochs) & 120 \\
 Objective evaluations per run & 4{,}840 (8{,}908 for HHO; see text) \\
-Independent seeds & 30 (seeds $1\ldots30$) \\
+Independent seeds & 30 (seeds 1--30) \\
 Tasks $N$ & \{500, 1000, 1500, 2000, 2500, 3000\} \\
 Hosts $M$ & \{10, 20\}; capacity $C=1$ per host \\
 Time horizon & 144 half-hour slots (3 days) \\
@@ -785,7 +785,7 @@ GA---mean $+2.51$ points under the published model, significant in 36 of 36, and
 constraint, significant in 21 of 24. The contribution is therefore a transferable initialisation strategy, not
 a property of WOA. Second, an ``improved'' initialisation using Latin-hypercube and opposition-based sampling
 but \emph{no carbon data} is statistically indistinguishable from uniform random ($+0.003$ to $+0.027$ points,
-$p=0.06$ to $0.94$). The benefit comes from the carbon information, not from more sophisticated sampling.
+$p$ = 0.06 to 0.94). The benefit comes from the carbon information, not from more sophisticated sampling.
 
 \begin{table}[H]\centering\footnotesize
 \caption{Ablation at 3000 tasks, $M=10$, published model, 30 seeds. Removing a fitness term raises carbon
@@ -812,8 +812,8 @@ exists to protect (Table~\ref{tab:ablation}). Among settings that hold both SLA 
 zero, the chosen $(0.4,0.3,0.3)$ sits on the knee of the trade-off at 87.58\% carbon with 0.13\% SLA
 violations. The weights are therefore justified by the constraint surface rather than by tuning for the
 headline number. The seeded fraction is not sensitive: carbon varies by less than 0.3 points across fractions
-from $1/6$ to 1, but variance falls sharply once seeding is enabled (standard deviation 0.381 to 0.111), so
-$1/3$ is a reasonable rather than a uniquely optimal choice.
+from 1/6 to 1, but variance falls sharply once seeding is enabled (standard deviation 0.381 to 0.111), so
+1/3 is a reasonable rather than a uniquely optimal choice.
 
 \subsection{Power models}\label{sec:power}
 CA-WOA ranks first in all six configurations under each of the linear, cubic and piecewise power models---18 of
@@ -917,7 +917,7 @@ of 3.39~gCO\textsubscript{2}/kWh against 3.87 for the baseline LSTM. \textbf{Tha
 not reproduce.} With operation-level determinism enabled and five repeats per model, the improvement is
 approximately 7\%, and the CNN-LSTM component is in fact the \emph{worst} of the candidate models at every
 horizon tested---which reverses the argument originally drawn from CarbonCast. The defensible result is at a
-12-hour horizon, where the ensemble achieves MAE $26.09\pm0.48$~gCO\textsubscript{2}/kWh against 37.03 for a
+12-hour horizon, where the ensemble achieves MAE 26.09 $\pm$ 0.48~gCO\textsubscript{2}/kWh against 37.03 for a
 seasonal-naive baseline (MASE 0.59), a 30\% improvement over the strongest naive predictor. Gradient boosting
 is the most reliable single component, with standard deviation 0.00--0.04 across repeats. The original figure
 of roughly 12\% is therefore withdrawn,
