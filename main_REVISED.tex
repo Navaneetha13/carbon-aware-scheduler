@@ -80,8 +80,8 @@ States regions, with 30 independent seeds and task counts from 500 to 3000 on 10
 improves final solution quality in 59 of 60 algorithm-configuration cells across six optimisers, and is proved
 never to be worse than the heuristic it seeds. The resulting scheduler produces fully feasible, deadline-safe
 schedules and outperforms the virtual-capacity-curve policy of a deployed production carbon-aware scheduler in
-all twelve configurations tested. A 12-hour-ahead ensemble forecast captures 99--100\% of the benefit
-available to perfect foresight at an identical optimisation budget. We also report the boundary of the
+all twelve configurations tested. A 12-hour-ahead ensemble forecast captures 73--89\% of the advantage that perfect
+foresight holds over purely reactive scheduling, at an identical optimisation budget. We also report the boundary of the
 approach: on a grid whose carbon intensity varies only 1.78$\times$ across the day, and under an enforced
 minimum active-host constraint, the advantage of seeding disappears.
 \end{abstract}
@@ -363,8 +363,10 @@ work delivered, optionally charging a startup energy penalty for each off-to-on 
 The carbon of a slot is its energy multiplied by the carbon intensity of that slot. \textbf{Monetary cost is
 reported but not optimised.} A time-of-use tariff (0.15~GBP/kWh off-peak, 0.30~GBP/kWh peak) enters the
 objective through the cost term, but because every method schedules the same total workload and the tariff
-peak does not coincide with the carbon peak, cost is effectively constant across methods---0.755~GBP for every
-method in the published configuration---and therefore does not influence any ranking. It is retained for
+peak does not coincide with the carbon peak, cost carries almost no information: in the temporal-model
+configuration it is identical to three decimal places for every method, at 0.755~GBP
+(\texttt{results/proposed\_ca\_woa\_comparison.csv}), and in the capacity model it varies only between 0.796
+and 0.935~GBP without altering any ranking. It is retained for
 completeness and the reader should not interpret it as a co-optimised objective. It is emphasised that this is
 a simulation driven by real traces and documented power models, not a measurement on physical hardware.
 
@@ -393,8 +395,11 @@ The carbon forecaster is evaluated on a held-out final 20\% of the series with d
 horizons of 1, 6, 12, 24 and 48 slots, using MAE, RMSE, MAPE and MASE, against three naive baselines
 (persistence, seasonal-naive at 24~h and seasonal-naive at one week). Each model is trained five times and
 results are reported as mean~$\pm$~standard deviation, because single-run figures did not reproduce. All
-experiments use fixed seeds and pinned dependencies (Mealpy 3.0.3, NumPy 1.26.0, SciPy 1.16.3,
-TensorFlow with operation-level determinism enabled, and scikit-learn).
+experiments use fixed seeds and recorded dependency versions (Mealpy 3.0.3, NumPy 2.5.2, SciPy 1.16.3,
+pandas 3.0.5, TensorFlow 2.21 with operation-level determinism enabled, and scikit-learn 1.9). Mealpy is
+pinned because it is the version reported in the submitted work; the numerical libraries are not, and the
+results are insensitive to them---a clean environment with current NumPy reproduces every figure
+bit-for-bit.
 
 \section{Design Specification}\label{sec:design}
 This section presents the proposed CA-WOA scheduler and the ensemble forecaster as word-based descriptions;
@@ -977,7 +982,8 @@ transferable initialisation strategy rather than a property of one algorithm; an
 sophisticated but carbon-blind achieves nothing, which isolates the source of the benefit. Fourth, the
 resulting scheduler produces fully feasible, deadline-safe schedules and outperforms the virtual-capacity-curve
 policy of a deployed production carbon-aware scheduler in all twelve configurations tested, while a
-12-hour-ahead ensemble forecast captures 99--100\% of the benefit available to perfect foresight.
+12-hour-ahead ensemble forecast captures 73--89\% of the advantage that perfect foresight holds over
+reactive scheduling.
 
 The boundaries of the approach are equally definite and are reported in Section~\ref{sec:limits}: on a grid
 whose carbon intensity varies only 1.78$\times$ across the day the method loses, and under an enforced
@@ -999,8 +1005,10 @@ API; the EirGrid Smart Grid Dashboard for the Republic of Ireland and Northern I
 Energy Information Administration API v2 for California and the Mid-Atlantic, with intensity derived from the
 hourly generation mix using IPCC AR5 median lifecycle emission factors. All code, the five regional carbon
 traces, per-seed raw results for all 29 experiments and the 27-check validation suite are archived at
-[Zenodo DOI to be inserted on acceptance]. Dependencies are pinned (Mealpy 3.0.3, NumPy 1.26.0, SciPy 1.16.3)
-and TensorFlow operation-level determinism is enabled, so all reported figures reproduce exactly.
+[Zenodo DOI to be inserted on acceptance]. Dependencies are recorded (Mealpy 3.0.3, NumPy 2.5.2, SciPy 1.16.3)
+and TensorFlow operation-level determinism is enabled, so all reported figures reproduce exactly. A
+27-check validation gate re-derives the originally published values to machine precision before any new result
+is computed, and it should be run first.
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}

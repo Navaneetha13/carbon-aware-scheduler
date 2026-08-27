@@ -135,7 +135,7 @@ Stating these strengthens the paper; a reviewer will find them otherwise.
 > heuristic it seeds. The resulting scheduler produces fully feasible, deadline-safe
 > schedules and outperforms the virtual-capacity-curve policy of a deployed production
 > carbon-aware scheduler in all twelve configurations tested. A 12-hour-ahead ensemble
-> forecast captures 99-100 % of the benefit available to perfect foresight. We also
+> forecast captures 73-89 % of the advantage perfect foresight holds over reactive scheduling. We also
 > report the boundary of the approach: on a grid whose carbon intensity varies only
 > 1.78x across the day, and under an enforced minimum active-host constraint, the
 > advantage of seeding disappears.

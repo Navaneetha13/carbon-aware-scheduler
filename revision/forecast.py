@@ -251,9 +251,17 @@ def couple():
     print(agg.to_string(index=False))
     for (N, M, pen), grp in agg.groupby(["N", "M", "pen"]):
         d = grp.set_index("scheduler")["red_mean"]
-        if "oracle" in d and d["oracle"] > 0:
-            print("  N=%d M=%d pen=%s: forecast captures %.0f%% of the oracle's saving"
-                  % (N, M, pen, 100 * d.get("forecast", 0) / d["oracle"]))
+        if {"oracle", "reactive", "forecast"} <= set(d.index):
+            # Fraction of the ADVANTAGE that perfect foresight has over reactive
+            # scheduling which the forecast actually captures. Dividing the two
+            # total reductions instead would be wrong: both are dominated by the
+            # consolidation baseline, which inflates the ratio to ~99% and makes a
+            # forecast look near-perfect regardless of its accuracy.
+            gain = d["oracle"] - d["reactive"]
+            got = d["forecast"] - d["reactive"]
+            print("  N=%d M=%d pen=%s: forecast captures %.0f%% of the advantage "
+                  "perfect foresight has over reactive scheduling"
+                  % (N, M, pen, 100 * got / gain if gain > 0 else float("nan")))
     print("\nSaved -> raw_F_coupling.csv, F_coupling_summary.csv")
 
 
