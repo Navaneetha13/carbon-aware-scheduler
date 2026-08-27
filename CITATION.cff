@@ -8,7 +8,7 @@ authors:
   - family-names: Thalakokkula
     given-names: Navaneetha
     affiliation: National College of Ireland
-repository-code: https://github.com/<YOUR-USERNAME>/carbon-aware-scheduler
+repository-code: https://github.com/Navaneetha13/carbon-aware-scheduler
 license: MIT
 version: v1.0-revision
 keywords:
