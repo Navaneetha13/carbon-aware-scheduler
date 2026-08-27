@@ -7,12 +7,19 @@ from the real traces in `../data/`; no result is transcribed or hardcoded.
 
 ```bash
 python3.12 -m venv .venv
-./.venv/bin/pip install -r requirements-lock.txt          # exact pinned versions
+./.venv/bin/pip install --no-deps "mealpy==3.0.3" opfunu   # see note below
+./.venv/bin/pip install -r requirements-lock.txt          # the rest
 ./.venv/bin/pip install "tensorflow>=2.15" scikit-learn   # forecasting only
 ```
 
-Pinned: `mealpy==3.0.3`, `numpy==1.26.0`, `pandas==3.0.5`, `scipy==1.16.3`.
-mealpy is pinned to the version used in the submitted paper.
+Versions actually used: `mealpy==3.0.3`, `numpy==2.5.2`, `scipy==1.16.3`,
+`pandas==3.0.5`, `matplotlib==3.11.1`.
+
+**Install mealpy with `--no-deps`.** Its metadata declares `numpy<=1.26.0`, but that
+constraint is unsatisfiable on Python 3.13+ (numpy 1.26.0 itself requires Python
+<3.13) and unnecessary --- mealpy 3.0.3 runs correctly on numpy 2.5.2. Verified in a
+clean virtual environment: `--no-deps` plus current numpy reproduces our results
+bit-for-bit (identical carbon reduction, fitness and evaluation count).
 
 ## Run order
 

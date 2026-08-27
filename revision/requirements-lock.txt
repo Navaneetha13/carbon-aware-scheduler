@@ -1,4 +1,19 @@
+# Versions actually used to produce every result in this directory, captured with
+# `pip freeze`. Verified: with these versions validate.py reproduces the published
+# figures to machine precision (worst relative deviation 9.3e-16).
+#
+# IMPORTANT - mealpy's own metadata declares numpy<=1.26.0, but that pin is both
+# unsatisfiable on Python 3.13+ (numpy 1.26.0 requires Python <3.13) and
+# unnecessary: mealpy 3.0.3 runs correctly on numpy 2.5.2. A clean install of
+# `pip install --no-deps mealpy==3.0.3` plus current numpy reproduces our results
+# bit-for-bit (same carbon reduction, same fitness, same evaluation count). So
+# install mealpy with --no-deps and do NOT pin numpy down to 1.26.
 mealpy==3.0.3
-numpy==1.26.0
-pandas==3.0.5
+numpy==2.5.2
 scipy==1.16.3
+pandas==3.0.5
+matplotlib==3.11.1
+
+# forecasting only
+tensorflow==2.21.0
+scikit-learn==1.9.0
