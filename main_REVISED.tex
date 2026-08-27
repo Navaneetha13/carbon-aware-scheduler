@@ -22,7 +22,7 @@
 \usepackage{array}
 \usepackage{multirow}
 
-% -------------------- embedded bibliography (all 19 verified against DBLP/publisher/DOI) --------------------
+% ---- embedded bibliography: 31 entries, every DOI resolved against Crossref before use ----
 \begin{filecontents*}{refs.bib}
 @article{mirjalili2016whale,author={Mirjalili, Seyedali and Lewis, Andrew},title={The Whale Optimization Algorithm},journal={Advances in Engineering Software},year={2016},volume={95},pages={51--67},doi={10.1016/j.advengsoft.2016.01.008}}
 @article{mirjalili2014grey,author={Mirjalili, Seyedali and Mirjalili, Seyed Mohammad and Lewis, Andrew},title={Grey Wolf Optimizer},journal={Advances in Engineering Software},year={2014},volume={69},pages={46--61},doi={10.1016/j.advengsoft.2013.12.007}}
@@ -142,7 +142,8 @@ following objectives are pursued:
 \begin{enumerate}
 \item Investigate the state of the art in energy-efficient and carbon-aware cloud scheduling and metaheuristic optimisation.
 \item Design CA-WOA: Whale Optimization applied to carbon minimisation with a deadline- and overload-penalised fitness function and carbon-aware seeding.
-\item Implement the scheduler and an ensemble carbon-intensity forecaster on real data (Google Cluster Trace and UK National Grid carbon intensity).
+\item Implement the scheduler and an ensemble carbon-intensity forecaster on real data: the Google Cluster
+Trace and NASA-iPSC workloads, and half-hourly carbon-intensity series for five grid regions.
 \item Evaluate CA-WOA against deterministic baselines, five standard metaheuristics and two published
 schedulers on feasibility, carbon reduction, SLA violations, energy, utilisation and scalability from 500 to
 3000 tasks, over 30 independent seeds and five real grid carbon-intensity traces.
@@ -209,8 +210,10 @@ shifting with consolidation. At production scale, Radovanovi\'c et al. described
 platform, which reshapes the timing of flexible compute using virtual capacity curves derived from day-ahead
 carbon forecasts \cite{radovanovic2023carbon}; this is a strong existence proof, yet it operates at the
 granularity of aggregate cluster load-shaping, is tightly coupled to proprietary infrastructure, and provides
-no reproducible artefact for job-level scheduling research. None of these works casts carbon-aware scheduling
-as a metaheuristic search problem.
+no reproducible artefact for job-level scheduling research. More recent work extends carbon-aware scheduling to
+large language model serving across geo-distributed datacentres, jointly considering carbon and water
+footprints \cite{moore2025sustainable}. None of these works casts carbon-aware scheduling as a metaheuristic
+search problem in which the initial population carries domain knowledge.
 
 \subsection{Metaheuristics for cloud task scheduling}
 Because cloud task scheduling is NP-hard, metaheuristics are a popular solution technique. The breadth of the
@@ -243,9 +246,15 @@ Gated Recurrent Unit \cite{cho2014learning}, because they capture temporal depen
 univariate LSTM is only a baseline and can underfit the strong daily and weekly seasonality of the signal. The
 current domain standard, CarbonCast, uses a CNN-LSTM hybrid with multivariate inputs (weather and fuel-mix
 features) for multi-day forecasting \cite{maji2022carboncast}, showing that hybrid, feature-rich models
-outperform plain recurrent networks. What remains comparatively under-explored is the tight coupling of a
-strong forecaster into the scheduling loop: many carbon-aware schedulers still act on the \emph{current}
-intensity, leaving the accuracy gains of forecasting only partially realised.
+outperform plain recurrent networks. Forecasting of grid-side quantities more
+broadly is an active area with directly transferable methods: hybrid neuro-fuzzy models have been applied to
+short-term load forecasting with adaptive control, and to distributed load levelling, in smart grids
+\cite{wang2024load, wang2024levelling}. Carbon intensity is a related but distinct target, since it depends on
+the generation \emph{mix} rather than on demand alone---which is why the forecaster here is evaluated against
+carbon-specific seasonal baselines rather than against load-forecasting benchmarks. What remains
+comparatively under-explored is the tight coupling of a strong forecaster into the scheduling loop: many
+carbon-aware schedulers still act on the \emph{current} intensity, leaving the accuracy gains of forecasting
+only partially realised.
 
 \begin{table}[H]\centering
 \footnotesize
@@ -269,6 +278,14 @@ Mirjalili et al. \cite{mirjalili2014grey} & 2014 & GWO & Generic & N & N & -- & 
 Heidari et al. \cite{heidari2019harris} & 2019 & HHO & Generic & N & N & -- & N \\
 Leerbeck et al. \cite{leerbeck2020short} & 2020 & ML forecast & CI fcst & Y & -- & Y & Y \\
 Maji et al. \cite{maji2022carboncast} & 2022 & CNN-LSTM (CarbonCast) & CI fcst & Y & -- & Y & Y \\
+Abbasi-khazaei \& Rezvani \cite{abbasikhazaei2022energy} & 2022 & Evolutionary VM placement & Carbon & Y & Y & Y & N \\
+Khodayarseresht et al. \cite{khodayarseresht2023energy} & 2023 & Geo-distributed placement & Carbon & Y & P & Y & N \\
+Madhusudhan et al. \cite{madhusudhan2023hho} & 2023 & HHO VM placement & Energy & N & P & Y & N \\
+Zhang \& Wang \cite{zhang2024ewoa} & 2024 & Enhanced WOA & Mixed & N & P & Y & N \\
+Miao et al. \cite{miao2024energy} & 2024 & Edge-cloud continuum & Carbon & Y & Y & Y & P \\
+Feng et al. \cite{feng2025gwo} & 2025 & GWO VM placement & Energy & N & P & Y & N \\
+Danach \cite{danach2026carbon} & 2026 & Multi-objective opt. & Carbon & Y & Y & Y & P \\
+Ruparel \cite{ruparel2026carbon} & 2026 & Robust opt. + storage & Carbon & Y & Y & Y & Y \\
 \midrule
 \textbf{This work} & \textbf{2026} & \textbf{CA-WOA + ensemble} & \textbf{Carbon} & \textbf{Y} & \textbf{Y} & \textbf{Y} & \textbf{Y} \\
 \bottomrule
@@ -282,9 +299,10 @@ summary, energy-aware consolidation reduces electricity use but ignores \emph{wh
 clean \cite{beloglazov2012optimal, beloglazov2012energy}; carbon-aware policies exploit temporal or renewable
 variability but are largely heuristic, do not co-optimise consolidation, and are not framed as metaheuristic
 search \cite{goiri2011greenslot, wiesner2021lets, radovanovic2023carbon}; general-purpose metaheuristics
-optimise energy, cost or makespan, have not been applied to carbon, and frequently trade SLA compliance for
-objective gains \cite{kalra2015review, mirjalili2016whale, heidari2019harris}; and although carbon intensity
-is demonstrably forecastable, forecasts are often used reactively \cite{leerbeck2020short, maji2022carboncast}.
+optimise energy, cost or makespan, are initialised at random regardless of available domain knowledge, and
+frequently trade SLA compliance for objective gains \cite{kalra2015review, mirjalili2016whale,
+heidari2019harris}; and although carbon intensity is demonstrably forecastable, forecasts are often used
+reactively \cite{leerbeck2020short, maji2022carboncast}.
 The gap is therefore not a missing algorithm but a missing \emph{question}. Carbon-aware metaheuristic
 scheduling is established \cite{abbasikhazaei2022energy, khodayarseresht2023energy, miao2024energy}, and
 recent work extends it to multi-objective and robust formulations \cite{danach2026carbon, ruparel2026carbon}.
