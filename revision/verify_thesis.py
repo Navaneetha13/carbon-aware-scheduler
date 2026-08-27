@@ -189,6 +189,30 @@ ac = pd.read_csv("../results/algorithm_comparison.csv")
 chk("capacity-model cost min (0.796)", 0.796, ac["Cost_GBP"].min(), tol=0.001)
 chk("capacity-model cost max (0.935)", 0.935, ac["Cost_GBP"].max(), tol=0.001)
 
+
+# --- runtime / memory (pooled over the seven valid grid experiments) ------
+al2 = al[al.method=="WOA"]
+chk("WOA runtime @500", 1.54, al2[al2.N==500]["runtime_s"].mean(), tol=0.005)
+chk("WOA runtime @3000", 6.20, al2[al2.N==3000]["runtime_s"].mean(), tol=0.005)
+chk("WOA memory @500", 0.99, al2[al2.N==500]["peak_mem_mb"].mean(), tol=0.005)
+chk("WOA memory @3000", 4.87, al2[al2.N==3000]["peak_mem_mb"].mean(), tol=0.005)
+ga2 = al[al.method=="GA"]
+chk("GA runtime @500", 2.61, ga2[ga2.N==500]["runtime_s"].mean(), tol=0.005)
+chk("GA runtime @3000", 10.57, ga2[ga2.N==3000]["runtime_s"].mean(), tol=0.005)
+chk("peak memory, max over ALL runs (claimed <9.6 MB)", 9.54, al["peak_mem_mb"].max(), tol=0.06)
+e25 = load("E25"); e25 = e25[(e25.nfe>0) & (e25.method=="WOA")]
+chk("WOA runtime @50 tasks", 0.89, e25[e25.N==50]["runtime_s"].mean(), tol=0.005)
+chk("WOA runtime @300 tasks", 1.24, e25[e25.N==300]["runtime_s"].mean(), tol=0.005)
+gb2 = load("GABUG")
+for n_, c_ in ((500,82.80),(1500,85.65),(3000,86.83)):
+    chk("GABUG BaseGA carbon N=%d"%n_, c_,
+        gb2[(gb2.method=="GA")&(gb2.N==n_)]["carbon_red_vs_naive_%"].mean(), tol=0.02)
+for n_, c_ in ((500,80.21),(1500,85.29),(3000,86.45)):
+    chk("GABUG OriginalGA carbon N=%d"%n_, c_,
+        gb2[(gb2.method=="GA_OriginalGA")&(gb2.N==n_)]["carbon_red_vs_naive_%"].mean(), tol=0.02)
+for l_, v_ in (("HHO",11),("DE",51),("PSO",5)):
+    chkeq("%s epochs to 1%%"%l_, v_, res[l_][2])
+
 # ---------------------------------------------------------------- report
 bad = [r for r in R if not r[0]]
 print("%-52s %-12s %-12s %s" % ("CLAIM", "IN THESIS", "IN DATA", ""))

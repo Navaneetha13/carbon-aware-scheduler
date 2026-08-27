@@ -866,9 +866,11 @@ competing method.}\label{fig:regions}
 \end{figure}
 
 \subsection{Computational cost and convergence}\label{sec:cost}
-Runtime scales linearly in task count. WOA is the cheapest search in the study (1.57~s and 1.0~MB at 500
-tasks, rising to 6.23~s and 4.9~MB at 3000), and GA the most expensive (2.65 to 10.68~s). At the counts used
-in comparable studies, runtimes are 0.89 to 1.25~s for WOA over 50 to 300 tasks.
+Runtime scales linearly in task count. WOA is the cheapest search in the study (1.54~s and 0.99~MB at 500
+tasks, rising to 6.20~s and 4.87~MB at 3000), and GA the most expensive (2.61 to 10.57~s), with HHO close
+behind because of its larger evaluation budget. Peak Python-allocated memory never exceeded 9.6~MB in any of
+the runs, so memory is not a limiting factor at this scale. At the counts used in comparable studies, WOA runs in
+0.89~s at 50 tasks and 1.24~s at 300.
 
 Convergence curves show the seeding acting exactly as intended: CA-WOA begins at roughly half the fitness of
 plain WOA (0.0626 against 0.1118) and stabilises within 1\% of its final value by epoch 8, against 16 for
