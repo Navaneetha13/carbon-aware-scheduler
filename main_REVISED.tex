@@ -656,7 +656,12 @@ violations at exactly zero, CA-WOA is the strongest, marginally ahead of HHO (11
 standard WOA.
 \begin{figure}[H]\centering
 \includegraphics[width=\linewidth]{fig_temporal_comparison.png}
-\caption{CA-WOA versus the FIFO baseline and standard metaheuristics under the temporal model: carbon reduction (left) and SLA violations (right).}\label{fig:temporal}
+\caption{Algorithm comparison at 3000 tasks on 10 hosts under the published model, 30 seeds: (a) carbon
+reduction against the naive FIFO baseline and (b) deadline violations. Error bars are 95\% confidence
+intervals. Note the truncated vertical axis in (a): the full spread across methods is only 0.87 percentage
+points, so the visual separation overstates the practical difference in carbon, whereas the differences in (b)
+are of a different order entirely. The methods that appear competitive on carbon are the ones missing
+deadlines.}\label{fig:temporal}
 \end{figure}
 
 \subsection{Host-capacity model comparison}
@@ -691,7 +696,10 @@ HHO                          & 82.30          & 0.0           & 83.1           &
 \end{table}
 \begin{figure}[H]\centering
 \includegraphics[width=\linewidth]{fig_capacity_comparison.png}
-\caption{Host-capacity model across all methods: carbon reduction, SLA violations and server utilisation (CA-WOA highlighted).}\label{fig:capacityfig}
+\caption{Capacity as a feasibility constraint, 10 hosts, 30 seeds. (a) Overload as a percentage of demanded
+load: any value above zero is an infeasible schedule, and the heuristics degrade as load rises while every
+population-based method stays at zero. (b) Carbon reduction among feasible schedules only. Error bars are 95\%
+confidence intervals.}\label{fig:capacityfig}
 \end{figure}
 
 \subsection{Scalability across task counts (500--3000)}
@@ -821,6 +829,19 @@ points and the seeding gain falls to $+0.14$. Temporal shifting requires a green
 grid is uniformly carbon-intense there is nothing to shift into. This identifies the deployment condition for
 the approach and is as useful a result as the positive ones.
 
+Fig.~\ref{fig:regions} plots the seeding gain against each grid's carbon variability. The least variable grid
+gains least, but the relationship is not monotonic---California at 6.49$\times$ shows a larger gain than the
+United Kingdom at 12.30$\times$---so variability alone does not rank the regions and the shape and timing of
+the daily trough evidently matter too. We therefore report the five points and the boundary case rather than
+fitting a trend to them.
+\begin{figure}[H]\centering
+\includegraphics[width=0.86\linewidth]{fig_regions.png}
+\caption{Seeding gain (CA-WOA minus standard WOA) against grid carbon variability, 1500 tasks, six real
+three-day windows per region, error bars 95\% confidence intervals. All five gains are positive, but the
+near-flat Mid-Atlantic grid gains least and is the configuration in which CA-WOA is beaten by the best
+competing method.}\label{fig:regions}
+\end{figure}
+
 \subsection{Computational cost and convergence}\label{sec:cost}
 Runtime scales linearly in task count. WOA is the cheapest search in the study (1.57~s and 1.0~MB at 500
 tasks, rising to 6.23~s and 4.9~MB at 3000), and GA the most expensive (2.65 to 10.68~s). At the counts used
@@ -832,7 +853,14 @@ plain WOA, reaching a better final value (0.0502 against 0.0544). PSO appears to
 epochs, but stagnates at 0.2378, which explains its poor carbon and high SLA violations.
 \textbf{An important caveat: GA and GWO had not converged at the 120-epoch budget}, requiring 102 and 112
 epochs respectively to stabilise. Their results are therefore lower bounds and this comparison understates
-them.
+them. Fig.~\ref{fig:conv} shows the curves.
+\begin{figure}[H]\centering
+\includegraphics[width=\linewidth]{fig_convergence.png}
+\caption{Convergence at 3000 tasks on 10 hosts, 10 seeds, shaded band one standard deviation. Carbon-aware
+seeding starts CA-WOA at roughly half the fitness of standard WOA and stabilises it by epoch~8 against 16.
+PSO flattens early at a poor value rather than converging well. GA and GWO are still improving when the
+budget ends.}\label{fig:conv}
+\end{figure}
 
 \subsection{Forecasting}
 The final component evaluates the carbon-intensity forecaster that makes the scheduler predictive. The
@@ -877,7 +905,10 @@ also tested but performed markedly worse (MAE 9.27), consistent with reports tha
 on smooth, small time series; this negative result is reported rather than omitted.
 \begin{figure}[H]\centering
 \includegraphics[width=\linewidth]{fig_forecast_comparison.png}
-\caption{Held-out carbon-intensity forecast: the actual series compared with the baseline LSTM and the adopted ensemble.}\label{fig:forecast}
+\caption{Carbon-intensity forecasting with direct multi-step prediction, mean of five repeats, error bars one
+standard deviation. (a) MAE against forecast horizon for every model and the three naive baselines. (b) The
+12-hour horizon in detail. The ensemble leads at horizons up to 12~h; CNN-LSTM is the weakest learned model at
+every horizon tested.}\label{fig:forecast}
 \end{figure}
 
 \subsection{Discussion}
