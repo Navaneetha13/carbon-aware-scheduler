@@ -216,7 +216,7 @@ problem; and although metaheuristics are the standard tool for NP-hard schedulin
 Algorithm (WOA), an effective and widely used optimiser, has yet to be applied to carbon-aware
 scheduling }\DIFdelend \DIFaddbegin \DIFadd{they are typically initialised at
 random, discarding domain knowledge that is cheap to compute. Carbon-aware metaheuristic scheduling does exist
-}\cite{abbasikhazaei2022energy, khodayarseresht2023energy, miao2024energy, danach2026carbon, ruparel2026carbon}\DIFadd{,
+\cite{abbasikhazaei2022energy, khodayarseresht2023energy, miao2024energy, danach2026carbon, ruparel2026carbon},
 but the initialisation of the population is treated as an implementation detail rather than as a design
 variable}\DIFaddend . Moreover, carbon forecasts, when used at all, are typically applied reactively rather than being
 coupled into the scheduler\DIFaddbegin \DIFadd{, and the conditions under which temporal shifting is worth doing at all are seldom
@@ -306,7 +306,7 @@ carbon forecasts \cite{radovanovic2023carbon}; this is a strong existence proof,
 granularity of aggregate cluster load-shaping, is tightly coupled to proprietary infrastructure, and provides
 no reproducible artefact for job-level scheduling research. \DIFaddbegin \DIFadd{More recent work extends carbon-aware scheduling to
 large language model serving across geo-distributed datacentres, jointly considering carbon and water
-footprints }\cite{moore2025sustainable}\DIFadd{. }\DIFaddend None of these works casts carbon-aware scheduling as a metaheuristic
+footprints \cite{moore2025sustainable}. }\DIFaddend None of these works casts carbon-aware scheduling as a metaheuristic
 search problem \DIFaddbegin \DIFadd{in which the initial population carries domain knowledge}\DIFaddend .
 
 \subsection{Metaheuristics for cloud task scheduling}
@@ -325,10 +325,10 @@ interface \cite{vanthieu2023mealpy}. The consistent limitation is the choice of 
 handled through penalty terms, aggressive optimisers such as GA, PSO and DE often reach good primary-objective
 values by violating service-level agreements (SLAs). \DIFdelbegin \DIFdel{Critically, although WOA }\DIFdelend \DIFaddbegin \DIFadd{WOA in particular }\DIFaddend has been applied to \DIFdelbegin \DIFdel{energy- and
 cost-aware scheduling , to the best of our knowledge it has not }\DIFdelend \DIFaddbegin \DIFadd{cloud task scheduling in enhanced form
-}\cite{zhang2024ewoa}\DIFadd{, and related swarm methods have }\DIFaddend been applied to \DIFdelbegin \DIFdel{\emph{carbon}-aware scheduling,
+\cite{zhang2024ewoa}, and related swarm methods have }\DIFaddend been applied to \DIFdelbegin \DIFdel{\emph{carbon}-aware scheduling,
 and its random population initialisation wastes function evaluations that a domain-informed seeding strategy
 could exploit. }\DIFdelend \DIFaddbegin \DIFadd{energy- and carbon-aware virtual-machine
-placement }\cite{feng2025gwo, madhusudhan2023hho, kumar2023eeoa, abbasikhazaei2022energy}\DIFadd{. What these share is
+placement \cite{feng2025gwo, madhusudhan2023hho, kumar2023eeoa, abbasikhazaei2022energy}. What these share is
 \emph{random population initialisation}, which spends function evaluations rediscovering structure that a
 cheap domain heuristic already encodes. That observation, rather than the choice of optimiser, motivates the
 present work.
@@ -347,14 +347,42 @@ features) for multi-day forecasting \cite{maji2022carboncast}, showing that hybr
 outperform plain recurrent networks. \DIFaddbegin \DIFadd{Forecasting of grid-side quantities more
 broadly is an active area with directly transferable methods: hybrid neuro-fuzzy models have been applied to
 short-term load forecasting with adaptive control, and to distributed load levelling, in smart grids
-}\cite{wang2024load, wang2024levelling}\DIFadd{. Carbon intensity is a related but distinct target, since it depends on
+\cite{wang2024load, wang2024levelling}. Carbon intensity is a related but distinct target, since it depends on
 the generation \emph{mix} rather than on demand alone---which is why the forecaster here is evaluated against
 carbon-specific seasonal baselines rather than against load-forecasting benchmarks. }\DIFaddend What remains
 comparatively under-explored is the tight coupling of a strong forecaster into the scheduling loop: many
 carbon-aware schedulers still act on the \emph{current} intensity, leaving the accuracy gains of forecasting
 only partially realised.
 
-\begin{table}[H]\centering
+\DIFdelbegin %DIFDELCMD < \begin{table}[H]\centering
+%DIFDELCMD < \footnotesize
+%DIFDELCMD < \setlength{\tabcolsep}{3.5pt}
+%DIFDELCMD < \caption{Comparison of representative energy-/carbon-aware scheduling and forecasting studies.
+%DIFDELCMD < (Y = yes, N = no, P = partial; ``Real'' = evaluated on a real workload and/or grid trace; ``Fcst'' = coupled to a forecaster.)}
+%DIFDELCMD < \label{tab:related}
+%DIFDELCMD < \begin{tabular}{@{}p{2.35cm}cp{1.9cm}ccccc@{}}
+%DIFDELCMD < \toprule
+%DIFDELCMD < Study & Yr & Technique & Obj. & Carbon & SLA & Real & Fcst \\
+%DIFDELCMD < \midrule
+%DIFDELCMD < Beloglazov \& Buyya \cite{beloglazov2012optimal} & 2012 & MBFD heuristic & Energy & N & P & N & N \\
+%DIFDELCMD < Beloglazov et al. \cite{beloglazov2012energy} & 2012 & Threshold heuristic & Energy & N & Y & N & N \\
+%DIFDELCMD < Goiri et al. \cite{goiri2011greenslot} & 2011 & GreenSlot heuristic & Green E & P & Y & N & Y \\
+%DIFDELCMD < Wiesner et al. \cite{wiesner2021lets} & 2021 & Temporal shifting & Carbon & Y & Y & Y & N \\
+%DIFDELCMD < Radovanovi\'c et al. \cite{radovanovic2023carbon} & 2023 & Load-shaping (VCC) & Carbon & Y & Y & Y & Y \\
+%DIFDELCMD < Dodge et al. \cite{dodge2022measuring} & 2022 & Measurement study & Carbon & Y & -- & Y & N \\
+%DIFDELCMD < Kalra \& Singh \cite{kalra2015review} & 2015 & Survey (metaheur.) & Mixed & N & P & P & N \\
+%DIFDELCMD < Mirjalili \& Lewis \cite{mirjalili2016whale} & 2016 & WOA & Generic & N & N & -- & N \\
+%DIFDELCMD < Mirjalili et al. \cite{mirjalili2014grey} & 2014 & GWO & Generic & N & N & -- & N \\
+%DIFDELCMD < Heidari et al. \cite{heidari2019harris} & 2019 & HHO & Generic & N & N & -- & N \\
+%DIFDELCMD < Leerbeck et al. \cite{leerbeck2020short} & 2020 & ML forecast & CI fcst & Y & -- & Y & Y \\
+%DIFDELCMD < Maji et al. \cite{maji2022carboncast} & 2022 & CNN-LSTM (CarbonCast) & CI fcst & Y & -- & Y & Y \\
+%DIFDELCMD < \midrule
+%DIFDELCMD < \textbf{This work} & \textbf{2026} & \textbf{CA-WOA + ensemble} & \textbf{Carbon} & \textbf{Y} & \textbf{Y} & \textbf{Y} & \textbf{Y} \\
+%DIFDELCMD < \bottomrule
+%DIFDELCMD < \end{tabular}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{table}[H]\centering
 \footnotesize
 \setlength{\tabcolsep}{3.5pt}
 \caption{Comparison of representative energy-/carbon-aware scheduling and forecasting studies.
@@ -376,19 +404,20 @@ Mirjalili et al. \cite{mirjalili2014grey} & 2014 & GWO & Generic & N & N & -- & 
 Heidari et al. \cite{heidari2019harris} & 2019 & HHO & Generic & N & N & -- & N \\
 Leerbeck et al. \cite{leerbeck2020short} & 2020 & ML forecast & CI fcst & Y & -- & Y & Y \\
 Maji et al. \cite{maji2022carboncast} & 2022 & CNN-LSTM (CarbonCast) & CI fcst & Y & -- & Y & Y \\
-\DIFaddbeginFL \DIFaddFL{Abbasi-khazaei \& Rezvani }\cite{abbasikhazaei2022energy} & \DIFaddFL{2022 }& \DIFaddFL{Evolutionary VM placement }& \DIFaddFL{Carbon }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{N }\\
-\DIFaddFL{Khodayarseresht et al. }\cite{khodayarseresht2023energy} & \DIFaddFL{2023 }& \DIFaddFL{Geo-distributed placement }& \DIFaddFL{Carbon }& \DIFaddFL{Y }& \DIFaddFL{P }& \DIFaddFL{Y }& \DIFaddFL{N }\\
-\DIFaddFL{Madhusudhan et al. }\cite{madhusudhan2023hho} & \DIFaddFL{2023 }& \DIFaddFL{HHO VM placement }& \DIFaddFL{Energy }& \DIFaddFL{N }& \DIFaddFL{P }& \DIFaddFL{Y }& \DIFaddFL{N }\\
-\DIFaddFL{Zhang \& Wang }\cite{zhang2024ewoa} & \DIFaddFL{2024 }& \DIFaddFL{Enhanced WOA }& \DIFaddFL{Mixed }& \DIFaddFL{N }& \DIFaddFL{P }& \DIFaddFL{Y }& \DIFaddFL{N }\\
-\DIFaddFL{Miao et al. }\cite{miao2024energy} & \DIFaddFL{2024 }& \DIFaddFL{Edge-cloud continuum }& \DIFaddFL{Carbon }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{P }\\
-\DIFaddFL{Feng et al. }\cite{feng2025gwo} & \DIFaddFL{2025 }& \DIFaddFL{GWO VM placement }& \DIFaddFL{Energy }& \DIFaddFL{N }& \DIFaddFL{P }& \DIFaddFL{Y }& \DIFaddFL{N }\\
-\DIFaddFL{Danach }\cite{danach2026carbon} & \DIFaddFL{2026 }& \DIFaddFL{Multi-objective opt. }& \DIFaddFL{Carbon }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{P }\\
-\DIFaddFL{Ruparel }\cite{ruparel2026carbon} & \DIFaddFL{2026 }& \DIFaddFL{Robust opt. + storage }& \DIFaddFL{Carbon }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{Y }& \DIFaddFL{Y }\\
-\DIFaddendFL \midrule
+Abbasi-khazaei \& Rezvani \cite{abbasikhazaei2022energy} & 2022 & Evolutionary VM placement & Carbon & Y & Y & Y & N \\
+Khodayarseresht et al. \cite{khodayarseresht2023energy} & 2023 & Geo-distributed placement & Carbon & Y & P & Y & N \\
+Madhusudhan et al. \cite{madhusudhan2023hho} & 2023 & HHO VM placement & Energy & N & P & Y & N \\
+Zhang \& Wang \cite{zhang2024ewoa} & 2024 & Enhanced WOA & Mixed & N & P & Y & N \\
+Miao et al. \cite{miao2024energy} & 2024 & Edge-cloud continuum & Carbon & Y & Y & Y & P \\
+Feng et al. \cite{feng2025gwo} & 2025 & GWO VM placement & Energy & N & P & Y & N \\
+Danach \cite{danach2026carbon} & 2026 & Multi-objective opt. & Carbon & Y & Y & Y & P \\
+Ruparel \cite{ruparel2026carbon} & 2026 & Robust opt. + storage & Carbon & Y & Y & Y & Y \\
+\midrule
 \textbf{This work} & \textbf{2026} & \textbf{CA-WOA + ensemble} & \textbf{Carbon} & \textbf{Y} & \textbf{Y} & \textbf{Y} & \textbf{Y} \\
 \bottomrule
 \end{tabular}
 \end{table}
+\DIFaddend 
 
 \subsection{Summary and research gap}
 Table~\ref{tab:related} contrasts these studies across technique, objective, and whether they are
@@ -402,8 +431,8 @@ frequently trade SLA compliance for objective gains \cite{kalra2015review, mirja
 heidari2019harris}; and although carbon intensity is demonstrably forecastable, forecasts are often used
 reactively \cite{leerbeck2020short, maji2022carboncast}.
 \DIFdelbegin \DIFdel{No existing work combines }\DIFdelend \DIFaddbegin \DIFadd{The gap is therefore not a missing algorithm but a missing \emph{question}. Carbon-aware metaheuristic
-scheduling is established }\cite{abbasikhazaei2022energy, khodayarseresht2023energy, miao2024energy}\DIFadd{, and
-recent work extends it to multi-objective and robust formulations }\cite{danach2026carbon, ruparel2026carbon}\DIFadd{.
+scheduling is established \cite{abbasikhazaei2022energy, khodayarseresht2023energy, miao2024energy}, and
+recent work extends it to multi-objective and robust formulations \cite{danach2026carbon, ruparel2026carbon}.
 What is absent is }\DIFaddend (i) a \DIFdelbegin \DIFdel{metaheuristic that applies Whale Optimization directly to carbon minimisation, }\DIFdelend \DIFaddbegin \DIFadd{characterisation of \emph{when} population-based search is necessary at all, as
 opposed to a greedy rule being sufficient or even provably optimal; }\DIFaddend (ii) \DIFdelbegin \DIFdel{carbon-aware seeding with an SLA- }\DIFdelend \DIFaddbegin \DIFadd{treatment of population
 initialisation as a design variable carrying domain knowledge, evaluated across optimisers rather than
@@ -442,17 +471,17 @@ from the Parallel Workloads Archive is used}\DIFdelend \DIFaddbegin \DIFadd{unch
 local pricing}\DIFaddend . Time is discretised into 30-minute slots aligned with the carbon series.
 
 \DIFaddbegin \begin{table}[H]\centering\small
-\caption{\DIFaddFL{Carbon-intensity traces. Variability is the ratio of maximum to minimum intensity over the
-111-day record and determines how much temporal shifting can achieve.}}\label{tab:regions}
+\caption{Carbon-intensity traces. Variability is the ratio of maximum to minimum intensity over the
+111-day record and determines how much temporal shifting can achieve.}\label{tab:regions}
 \begin{tabular}{lrrrr}
 \toprule
-\DIFaddFL{Region }& \DIFaddFL{Slots }& \DIFaddFL{Mean (gCO\textsubscript{2}/kWh) }& \DIFaddFL{Range }& \DIFaddFL{Variability }\\
+Region & Slots & Mean (gCO\textsubscript{2}/kWh) & Range & Variability \\
 \midrule
-\DIFaddFL{United Kingdom       }& \DIFaddFL{5}{\DIFaddFL{,}}\DIFaddFL{329 }& \DIFaddFL{111.9 }& \DIFaddFL{20--246  }& \DIFaddFL{12.30$\times$ }\\
-\DIFaddFL{Northern Ireland     }& \DIFaddFL{4}{\DIFaddFL{,}}\DIFaddFL{990 }& \DIFaddFL{197.9 }& \DIFaddFL{47--444  }& \DIFaddFL{9.46$\times$ }\\
-\DIFaddFL{United States (CAL)  }& \DIFaddFL{5}{\DIFaddFL{,}}\DIFaddFL{376 }& \DIFaddFL{173.0 }& \DIFaddFL{65--422  }& \DIFaddFL{6.49$\times$ }\\
-\DIFaddFL{Republic of Ireland  }& \DIFaddFL{5}{\DIFaddFL{,}}\DIFaddFL{374 }& \DIFaddFL{168.6 }& \DIFaddFL{77--336  }& \DIFaddFL{4.36$\times$ }\\
-\DIFaddFL{United States (MIDA) }& \DIFaddFL{5}{\DIFaddFL{,}}\DIFaddFL{376 }& \DIFaddFL{333.5 }& \DIFaddFL{235--418 }& \DIFaddFL{1.78$\times$ }\\
+United Kingdom       & 5{,}329 & 111.9 & 20--246  & 12.30$\times$ \\
+Northern Ireland     & 4{,}990 & 197.9 & 47--444  & 9.46$\times$ \\
+United States (CAL)  & 5{,}376 & 173.0 & 65--422  & 6.49$\times$ \\
+Republic of Ireland  & 5{,}374 & 168.6 & 77--336  & 4.36$\times$ \\
+United States (MIDA) & 5{,}376 & 333.5 & 235--418 & 1.78$\times$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -631,10 +660,10 @@ local optima.
 slot $s$, and let $T_i$ be its set of deadline-feasible starts. Writing
 $c_{is}=\sum_{k=s}^{s+p_i-1}E_i\,\mathrm{CI}_k$ for the carbon of running task $i$ from slot $s$:
 }\begin{align}
-\DIFadd{\min\ }& \DIFadd{\textstyle\sum_i\sum_{s\in T_i} c_{is}\,x_{is} \label{eq:milp}}\\
-\DIFadd{\text{s.t.}\ }& \DIFadd{\textstyle\sum_{s\in T_i} x_{is}=1 }&& \DIFadd{\forall i \label{eq:assign}}\\
-& \DIFadd{\textstyle\sum_i\sum_{s:\,s\le k<s+p_i} u_i\,x_{is}\ \le\ M\!\cdot\!C }&& \DIFadd{\forall k \label{eq:cap}
-}\end{align}
+\min\ & \textstyle\sum_i\sum_{s\in T_i} c_{is}\,x_{is} \label{eq:milp}\\
+\text{s.t.}\ & \textstyle\sum_{s\in T_i} x_{is}=1 && \forall i \label{eq:assign}\\
+& \textstyle\sum_i\sum_{s:\,s\le k<s+p_i} u_i\,x_{is}\ \le\ M\!\cdot\!C && \forall k \label{eq:cap}
+\end{align}
 \DIFadd{Deadlines are enforced structurally by the domain $T_i$, which is what the repair decoding implements.
 }
 
@@ -760,31 +789,64 @@ makes the host count meaningful}\DIFaddend .
 Per-algorithm control parameters are the library defaults (Table~\ref{tab:hyper}); CA-WOA differs from
 standard WOA only in its carbon-aware seeding.
 
-\begin{table}[H]\centering \footnotesize
+\DIFdelbegin %DIFDELCMD < \begin{table}[H]\centering \footnotesize
+%DIFDELCMD < \caption{Common experimental configuration.}\label{tab:config}
+%DIFDELCMD < \begin{tabular}{@{}ll@{}}
+%DIFDELCMD < \toprule Parameter & Value \\ \midrule
+%DIFDELCMD < Population size & 40 (capacity model), 50 (temporal model) \\
+%DIFDELCMD < Evolution count (epochs) & 120 (capacity model), 150 (temporal model) \\
+%DIFDELCMD < Independent seeds & 5 (robustness/scalability); base seed 42 \\
+%DIFDELCMD < Tasks $N$ & 60 (main); \{50, 100, 200, 300\} (scalability) \\
+%DIFDELCMD < Hosts $M$ (VMs) & derived $=\lceil$peak demand$\rceil=5$; capacity $C=1$ \\
+%DIFDELCMD < Time horizon & 144 half-hour slots (3 days) \\
+%DIFDELCMD < Deadline slack / max deferral & 8 / 24 slots \\
+%DIFDELCMD < Fitness weights $(\alpha,\beta,\gamma)$ & $(0.4, 0.3, 0.3)$, sum $=1$ \\
+%DIFDELCMD < Power model & $P_{\text{idle}}=100$~W, $P_{\text{max}}=250$~W, slot $0.5$~h \\
+%DIFDELCMD < \bottomrule
+%DIFDELCMD < \end{tabular}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{table}[H]\centering \footnotesize
 \caption{Common experimental configuration.}\label{tab:config}
 \begin{tabular}{@{}ll@{}}
 \toprule Parameter & Value \\ \midrule
-Population size & 40 \DIFdelbeginFL \DIFdelFL{(capacity model), 50 (temporal model) }\DIFdelendFL \\
-Evolution count (epochs) & 120 \DIFdelbeginFL \DIFdelFL{(capacity model),150 (temporal model}\DIFdelendFL \DIFaddbeginFL \\
-\DIFaddFL{Objective evaluations per run }& \DIFaddFL{4}{\DIFaddFL{,}}\DIFaddFL{840 (8}{\DIFaddFL{,}}\DIFaddFL{908 for HHO; see text}\DIFaddendFL ) \\
-Independent seeds & \DIFdelbeginFL \DIFdelFL{5 (robustness/scalability) ; base seed 42 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{30 (seeds 1--30) }\DIFaddendFL \\
-Tasks $N$ & \DIFdelbeginFL \DIFdelFL{60 (main); \{50, 100, 200, 300\} (scalability) }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\{500, 1000, 1500, 2000, 2500, 3000\} }\DIFaddendFL \\
-Hosts $M$ \DIFdelbeginFL \DIFdelFL{(VMs) }\DIFdelendFL & \DIFdelbeginFL \DIFdelFL{derived $=\lceil$peak demand$\rceil=5$}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{\{10, 20\}}\DIFaddendFL ; capacity $C=1$ \DIFaddbeginFL \DIFaddFL{per host }\DIFaddendFL \\
+Population size & 40 \\
+Evolution count (epochs) & 120 \\
+Objective evaluations per run & 4{,}840 (8{,}908 for HHO; see text) \\
+Independent seeds & 30 (seeds 1--30) \\
+Tasks $N$ & \{500, 1000, 1500, 2000, 2500, 3000\} \\
+Hosts $M$ & \{10, 20\}; capacity $C=1$ per host \\
 Time horizon & 144 half-hour slots (3 days) \\
 Deadline slack / max deferral & 8 / 24 slots \\
 Fitness weights $(\alpha,\beta,\gamma)$ & $(0.4, 0.3, 0.3)$, sum $=1$ \\
-Power \DIFdelbeginFL \DIFdelFL{model }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{models }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{$P_{\text{idle}}=100$~W }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{linear, cubic, piecewise; all 100~W at $u{=}0$, 250~W at $u{=}1$ }\\
-\DIFaddFL{Carbon regions }& \DIFaddFL{UK, IE, NI, US-CAL}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{$P_{\text{max}}=250$~W , slot $0.5$}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{US-MIDA }\\
-\DIFaddFL{Slot length }& \DIFaddFL{0.5}\DIFaddendFL ~h \\
+Power models & linear, cubic, piecewise; all 100~W at $u{=}0$, 250~W at $u{=}1$ \\
+Carbon regions & UK, IE, NI, US-CAL, US-MIDA \\
+Slot length & 0.5~h \\
 \bottomrule
 \end{tabular}
 \end{table}
+\DIFaddend 
 
-\begin{table}[H]\centering \footnotesize
-\caption{Per-algorithm control parameters (Mealpy 3.0.3 defaults; identical across all runs). \DIFaddbeginFL \DIFaddFL{Note the GA
+\DIFdelbegin %DIFDELCMD < \begin{table}[H]\centering \footnotesize
+%DIFDELCMD < \caption{Per-algorithm control parameters (Mealpy 3.0.3 defaults; identical across all runs).}\label{tab:hyper}
+%DIFDELCMD < \begin{tabular}{@{}ll@{}}
+%DIFDELCMD < \toprule Algorithm & Control parameters \\ \midrule
+%DIFDELCMD < CA-WOA (proposed) & WOA operators; $\approx\!1/3$ population carbon-seeded \\
+%DIFDELCMD < WOA & $a$: linear from 2 to 0, spiral $b=1$, switch $p=0.5$ \\
+%DIFDELCMD < GWO & $a$: linear from 2 to 0 \\
+%DIFDELCMD < PSO & $c_1=c_2=2.05$, inertia $w=0.4$ \\
+%DIFDELCMD < DE & scaling $F=0.1$, crossover $CR=0.9$, rand/1/bin \\
+%DIFDELCMD < HHO & escaping energy $E_0\in[-1,1]$ (default) \\
+%DIFDELCMD < GA & $p_c=0.95$, $p_m=0.025$, tournament sel., uniform crossover \\
+%DIFDELCMD < \bottomrule
+%DIFDELCMD < \end{tabular}
+%DIFDELCMD < \end{table}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \begin{table}[H]\centering \footnotesize
+\caption{Per-algorithm control parameters (Mealpy 3.0.3 defaults; identical across all runs). Note the GA
 implementation: \texttt{GA.OriginalGA} in Mealpy 3.0.3 evaluates only its initial population---40 objective
-evaluations rather than 4}{\DIFaddFL{,}}\DIFaddFL{840---and therefore performs no search. \texttt{GA.BaseGA} is used instead, and
-the defect is quantified in Section~\ref{sec:eval}.}\DIFaddendFL }\label{tab:hyper}
+evaluations rather than 4{,}840---and therefore performs no search. \texttt{GA.BaseGA} is used instead, and
+the defect is quantified in Section~\ref{sec:eval}.}\label{tab:hyper}
 \begin{tabular}{@{}ll@{}}
 \toprule Algorithm & Control parameters \\ \midrule
 CA-WOA (proposed) & WOA operators; $\approx\!1/3$ population carbon-seeded \\
@@ -793,10 +855,11 @@ GWO & $a$: linear from 2 to 0 \\
 PSO & $c_1=c_2=2.05$, inertia $w=0.4$ \\
 DE & scaling $F=0.1$, crossover $CR=0.9$, rand/1/bin \\
 HHO & escaping energy $E_0\in[-1,1]$ (default) \\
-GA \DIFaddbeginFL \DIFaddFL{(\texttt{BaseGA}) }\DIFaddendFL & $p_c=0.95$, $p_m=0.025$, tournament sel., uniform crossover \\
+GA (\texttt{BaseGA}) & $p_c=0.95$, $p_m=0.025$, tournament sel., uniform crossover \\
 \bottomrule
 \end{tabular}
 \end{table}
+\DIFaddend 
 
 \subsection{Algorithm comparison (temporal model)}
 The first experiment isolates the benefit of carbon-aware \emph{timing} by scheduling a fixed set of real
@@ -841,24 +904,34 @@ constraint (Section~\ref{sec:feas}) reverses the apparent ranking: the }\DIFadde
 result. }\DIFaddend The aggressive optimisers \DIFdelbegin \DIFdel{that
 looked competitive on carbon }\DIFdelend (PSO, DE, GA) again incur substantial SLA \DIFdelbegin \DIFdel{violations and lower utilisation,
 reinforcing that CA-WOA's advantage lies in achieving top carbon performance \emph{without} sacrificing
-deadlines }\DIFdelend \DIFaddbegin \DIFadd{violations---33\% to 64\% of
-deadlines missed---so they are worse on both axes simultaneously}\DIFaddend .
-\begin{table}[H]\centering
-\caption{Capacity-model comparison (real Google trace\DIFdelbeginFL \DIFdelFL{+ }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{, }\DIFaddendFL UK carbon)\DIFaddbeginFL \DIFaddFL{, with the reduction decomposed by
-mechanism}\DIFaddendFL . \DIFaddbeginFL \DIFaddFL{Consolidation accounts for 80.50 of the 83.25 percentage points.}\DIFaddendFL }\label{tab:capacity}
-\DIFdelbeginFL %DIFDELCMD < \begin{tabular}{lccc}
+deadlines .
+}%DIFDELCMD < \begin{table}[H]\centering
+%DIFDELCMD < \caption{Capacity-model comparison (real Google trace + UK carbon).}\label{tab:capacity}
+%DIFDELCMD < \begin{tabular}{lccc}
+%DIFDELCMD < \toprule Method & Carbon red.\% & SLA\% & Util.\% \\ \midrule
+%DIFDELCMD < Energy-aware (consolidation) & 80.5 & 0.0 & 75.2 \\
+%DIFDELCMD < Carbon-aware greedy & 82.6 & 0.0 & 75.2 \\
+%DIFDELCMD < HHO & 82.3 & 0.0 & 83.1 \\
+%DIFDELCMD < \textbf{CA-WOA} & \textbf{83.25} & \textbf{0.0} & \textbf{84.0} \\ \bottomrule
+%DIFDELCMD < \end{tabular}
+%DIFDELCMD < \end{table}
 %DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \begin{tabular}{lcccc}
-\DIFaddendFL \toprule Method & Carbon red.\% & SLA\% & Util.\% \DIFaddbeginFL & \DIFaddFL{Attributable to }\DIFaddendFL \\ \midrule
-\DIFaddbeginFL \DIFaddFL{Naive FIFO (reference)       }& \DIFaddFL{0.00           }& \DIFaddFL{0.0           }& \DIFaddFL{--             }& \DIFaddFL{-- }\\
-\DIFaddendFL Energy-aware (consolidation) & \DIFdelbeginFL \DIFdelFL{80.5 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{80.50          }\DIFaddendFL & 0.0           & 75.2           \DIFaddbeginFL & \DIFaddFL{consolidation }\DIFaddendFL \\
-Carbon-aware greedy          & \DIFdelbeginFL \DIFdelFL{82.6 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{82.56          }\DIFaddendFL & 0.0           & 75.2           \DIFaddbeginFL & \DIFaddFL{$+2.06$ timing }\DIFaddendFL \\
-HHO                          & \DIFdelbeginFL \DIFdelFL{82.3 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{82.30          }\DIFaddendFL & 0.0           & 83.1           \DIFaddbeginFL & \DIFaddFL{search }\DIFaddendFL \\
-\textbf{CA-WOA}              & \textbf{83.25} & \textbf{0.0}  & \textbf{84.0}  \DIFaddbeginFL & \DIFaddFL{$+0.69$ over greedy }\DIFaddendFL \\
+\DIFdelend \DIFaddbegin \DIFadd{violations---33\% to 64\% of
+deadlines missed---so they are worse on both axes simultaneously.
+}\begin{table}[H]\centering
+\caption{Capacity-model comparison (real Google trace, UK carbon), with the reduction decomposed by
+mechanism. Consolidation accounts for 80.50 of the 83.25 percentage points.}\label{tab:capacity}
+\begin{tabular}{lcccc}
+\toprule Method & Carbon red.\% & SLA\% & Util.\% & Attributable to \\ \midrule
+Naive FIFO (reference)       & 0.00           & 0.0           & --             & -- \\
+Energy-aware (consolidation) & 80.50          & 0.0           & 75.2           & consolidation \\
+Carbon-aware greedy          & 82.56          & 0.0           & 75.2           & $+2.06$ timing \\
+HHO                          & 82.30          & 0.0           & 83.1           & search \\
+\textbf{CA-WOA}              & \textbf{83.25} & \textbf{0.0}  & \textbf{84.0}  & $+0.69$ over greedy \\
 \bottomrule
 \end{tabular}
 \end{table}
-\begin{figure}[H]\centering
+\DIFaddend \begin{figure}[H]\centering
 \includegraphics[width=\linewidth]{fig_capacity_comparison.png}
 \caption{\DIFdelbeginFL \DIFdelFL{Host-capacity model across all methods}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Capacity as a feasibility constraint, 10 hosts, 30 seeds. (a) Overload as a percentage of demanded
 load}\DIFaddendFL : \DIFdelbeginFL \DIFdelFL{carbon reduction}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{any value above zero is an infeasible schedule}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{SLA violations }\DIFdelendFL and \DIFdelbeginFL \DIFdelFL{server utilisation }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{the heuristics degrade as load rises while every
@@ -892,22 +965,25 @@ exactly 0.0000\% throughout under repair decoding.
 }
 
 \begin{table}[H]\centering\footnotesize
-\caption{\DIFaddFL{Overload as a percentage of demanded load, $M=10$. Any non-zero value is an infeasible schedule. All
-six metaheuristics, and Google's VCC policy, remain at 0.00 throughout.}}\label{tab:feas}
+\caption{Overload as a percentage of demanded load, $M=10$. Any non-zero value is an infeasible schedule. All
+six metaheuristics, and Google's VCC policy, remain at 0.00 throughout.}\label{tab:feas}
 \begin{tabular}{lrrrrrr}
 \toprule
-\DIFaddFL{Method }& \DIFaddFL{500 }& \DIFaddFL{1000 }& \DIFaddFL{1500 }& \DIFaddFL{2000 }& \DIFaddFL{2500 }& \DIFaddFL{3000 }\\ \midrule
-\DIFaddFL{FIFO / consolidation      }& \DIFaddFL{0.00 }& \DIFaddFL{0.99 }& \DIFaddFL{8.97  }& \DIFaddFL{18.22 }& \DIFaddFL{24.80 }& \DIFaddFL{28.54 }\\
-\DIFaddFL{Threshold (Wait Awhile)   }& \DIFaddFL{0.00 }& \DIFaddFL{0.99 }& \DIFaddFL{8.97  }& \DIFaddFL{18.22 }& \DIFaddFL{24.80 }& \DIFaddFL{28.54 }\\
-\DIFaddFL{Carbon-aware greedy       }& \DIFaddFL{0.00 }& \DIFaddFL{7.14 }& \DIFaddFL{24.69 }& \DIFaddFL{34.70 }& \DIFaddFL{41.36 }& \DIFaddFL{45.23 }\\
-\DIFaddFL{VCC (Google)              }& \DIFaddFL{0.00 }& \DIFaddFL{0.00 }& \DIFaddFL{0.00  }& \DIFaddFL{0.00  }& \DIFaddFL{0.00  }& \DIFaddFL{0.00 }\\
-\DIFaddFL{\textbf{CA-WOA}           }& \DIFaddFL{\textbf{0.00} }& \DIFaddFL{\textbf{0.00} }& \DIFaddFL{\textbf{0.00} }& \DIFaddFL{\textbf{0.00} }& \DIFaddFL{\textbf{0.00} }& \DIFaddFL{\textbf{0.00} }\\
+Method & 500 & 1000 & 1500 & 2000 & 2500 & 3000 \\ \midrule
+FIFO / consolidation      & 0.00 & 0.99 & 8.97  & 18.22 & 24.80 & 28.54 \\
+Threshold (Wait Awhile)   & 0.00 & 0.99 & 8.97  & 18.22 & 24.80 & 28.54 \\
+Carbon-aware greedy       & 0.00 & 7.14 & 24.69 & 34.70 & 41.36 & 45.23 \\
+VCC (Google)              & 0.00 & 0.00 & 0.00  & 0.00  & 0.00  & 0.00 \\
+\textbf{CA-WOA}           & \textbf{0.00} & \textbf{0.00} & \textbf{0.00} & \textbf{0.00} & \textbf{0.00} & \textbf{0.00} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \DIFadd{Among feasible schedules CA-WOA is best in 9 of 12 configurations. It is beaten by GA in three cells, all at
-$M=10$ with $N\ge1500$, by 0.08 }\DIFaddend to \DIFdelbegin \DIFdel{59\%, and PSO from about 13\% to 41\% }\DIFdelend \DIFaddbegin \DIFadd{0.15 percentage points---reported here rather than omitted. Its variance is
+$M=10$ with $N\ge1500$, by 0.08 }\DIFaddend to \DIFdelbegin \DIFdel{59\%, and PSO from about 13\% to 41\%,
+so the methods that superficially match CA-WOA on carbon
+become progressively less viable.
+This shows that }\DIFdelend \DIFaddbegin \DIFadd{0.15 percentage points---reported here rather than omitted. Its variance is
 also higher than its rivals' (standard deviation up to 0.33 against GA's 0.03), so it finds better schedules
 less consistently.
 }
@@ -915,10 +991,10 @@ less consistently.
 \subsection{\DIFadd{Comparison with published schedulers}}\label{sec:modern}
 \DIFadd{Two published policies are reimplemented in the same simulator, using no fitness function and no
 metaheuristic machinery: the virtual-capacity-curve (VCC) load-shaping policy of Google's production
-carbon-aware scheduler }\cite{radovanovic2023carbon}\DIFadd{, which throttles per-slot capacity as a function of carbon
-intensity; and threshold-based temporal shifting }\cite{wiesner2021lets}\DIFadd{. VCC's throttle floor was swept over
+carbon-aware scheduler \cite{radovanovic2023carbon}, which throttles per-slot capacity as a function of carbon
+intensity; and threshold-based temporal shifting \cite{wiesner2021lets}. VCC's throttle floor was swept over
 eight values so that the baseline is not weakened by an arbitrary parameter choice; it proved insensitive
-(85.02--85.11\% at 1000 tasks). Only VCC and the metaheuristics are feasible everywhere. CA-WOA beats VCC in
+(85.02--85.11\% at 1000 tasks). Only VCC and the metaheuristics are feasible everywhere. }\DIFaddend CA-WOA \DIFdelbegin \DIFdel{'s reliability is preserved as the workload grows, which is the property a production scheduler requires}\DIFdelend \DIFaddbegin \DIFadd{beats VCC in
 \textbf{12 of 12} configurations, by 4.48 percentage points at 500 tasks narrowing to 0.35 at 3000, and by
 4.01 points on average across heterogeneous fleets. The threshold policy shifts load toward green slots but
 has no capacity awareness and remains infeasible at 28.54\% overload, which shows that carbon awareness alone
@@ -936,20 +1012,18 @@ $p$ = 0.06 to 0.94). The benefit comes from the carbon information, not from mor
 }
 
 \begin{table}[H]\centering\footnotesize
-\caption{\DIFaddFL{Ablation at 3000 tasks, $M=10$, published model, 30 seeds. Removing a fitness term raises carbon
+\caption{Ablation at 3000 tasks, $M=10$, published model, 30 seeds. Removing a fitness term raises carbon
 only by violating the constraint that term exists to protect, so the higher figures are not better
-schedules.}}\label{tab:ablation}
+schedules.}\label{tab:ablation}
 \begin{tabular}{lrrr}
 \toprule
-\DIFaddFL{Variant }& \DIFaddFL{Carbon red.\% }& \DIFaddFL{SLA\% }& \DIFaddFL{Overload\% }\\ \midrule
-\DIFaddFL{Greedy only (no search)              }& \DIFaddFL{89.40 }& \DIFaddFL{0.00  }& \DIFaddFL{45.23 }\\
-\DIFaddFL{Standard WOA (random init)           }& \DIFaddFL{87.15 }& \DIFaddFL{0.57  }& \DIFaddFL{0.58 }\\
-\DIFaddFL{WOA + improved init (no carbon data) }& \DIFaddFL{87.17 }& \DIFaddFL{0.41  }& \DIFaddFL{0.50 }\\
-\DIFaddFL{\textbf{CA-WOA (carbon seeding)}     }& \DIFaddFL{\textbf{87.58} }& \DIFaddFL{\textbf{0.13} }& \DIFaddFL{\textbf{0.03} }\\
-\DIFaddFL{CA-WOA, $\beta=0$ (no SLA term)      }& \DIFaddFL{88.39 }& \DIFaddFL{37.53 }& \DIFaddFL{0.00 }\\
-\DIFaddFL{CA-WOA}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{so the methods that superficially match CA-WOA on carbon
-become progressively less viable.
-This shows that }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{$\gamma=0$ (no overload term)}& \DIFaddFL{89.41 }& \DIFaddFL{0.00  }& \DIFaddFL{45.05 }\\
+Variant & Carbon red.\% & SLA\% & Overload\% \\ \midrule
+Greedy only (no search)              & 89.40 & 0.00  & 45.23 \\
+Standard WOA (random init)           & 87.15 & 0.57  & 0.58 \\
+WOA + improved init (no carbon data) & 87.17 & 0.41  & 0.50 \\
+\textbf{CA-WOA (carbon seeding)}     & \textbf{87.58} & \textbf{0.13} & \textbf{0.03} \\
+CA-WOA, $\beta=0$ (no SLA term)      & 88.39 & 37.53 & 0.00 \\
+CA-WOA, $\gamma=0$ (no overload term)& 89.41 & 0.00  & 45.05 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -967,7 +1041,7 @@ from 1/6 to 1, but variance falls sharply once seeding is enabled (standard devi
 }
 
 \subsection{\DIFadd{Power models}}\label{sec:power}
-\DIFaddend CA-WOA \DIFdelbegin \DIFdel{'s reliability is preserved as the workload grows, which is the property a production scheduler requires}\DIFdelend \DIFaddbegin \DIFadd{ranks first in all six configurations under each of the linear, cubic and piecewise power models---18 of
+\DIFadd{CA-WOA ranks first in all six configurations under each of the linear, cubic and piecewise power models---18 of
 18. Its margin is in fact \emph{widest} under the cubic model ($+0.84$ points over HHO at 500 tasks), because
 a convex power curve penalises the spread-out schedules that unseeded optimisers produce. The conclusions are
 therefore not an artefact of the linear assumption, which was the concern behind the request.
@@ -1117,15 +1191,14 @@ rather than to sampling machinery.
 
 \DIFadd{These findings }\DIFaddend extend the literature reviewed in Section~\ref{sec:related}. They confirm the value of temporal
 shifting \DIFdelbegin \DIFdel{reported by Wiesner et al.
-}\DIFdelend \cite{wiesner2021lets} and of consolidation \DIFdelbegin \DIFdel{established by Beloglazov et al. }\DIFdelend \cite{beloglazov2012energy} \DIFdelbegin \DIFdel{, but
-show that }\DIFdelend \DIFaddbegin \DIFadd{and show }\DIFaddend the two are
+}\DIFdelend \cite{wiesner2021lets} and of consolidation \DIFdelbegin \DIFdel{established by Beloglazov et al. \cite{beloglazov2012energy} , but
+show that }\DIFdelend \DIFaddbegin \DIFadd{\cite{beloglazov2012energy} and show }\DIFaddend the two are
 complementary\DIFdelbegin \DIFdel{and can be combined within a single metaheuristic search; and they support
 the finding that ensembles outperform single forecasters, echoing the hybrid-model advantage reported for
-CarbonCast }%DIFDELCMD < \cite{maji2022carboncast}%%%
-\DIFdel{.
+CarbonCast \cite{maji2022carboncast}.
 The principal strength of }\DIFdelend \DIFaddbegin \DIFadd{, but they also qualify both: consolidation accounts for 80.50 of the 83.25 percentage points
 reported here, and temporal shifting is worthless on a grid with little diurnal variation. Against a deployed
-production scheduler }\cite{radovanovic2023carbon} \DIFadd{the proposed method wins in every configuration tested,
+production scheduler \cite{radovanovic2023carbon} the proposed method wins in every configuration tested,
 which is a stronger claim than beating an infeasible heuristic.
 }
 
@@ -1208,7 +1281,7 @@ the constraint surface rather than by tuning, learning them online is a natural 
 }
 
 \section*{\DIFadd{Availability of Data and Materials}}
-\DIFadd{All data are public. Workload traces: Google Cluster Trace 2011 }\cite{reiss2011google} \DIFadd{and the NASA-iPSC log
+\DIFadd{All data are public. Workload traces: Google Cluster Trace 2011 \cite{reiss2011google} and the NASA-iPSC log
 from the Parallel Workloads Archive. Carbon intensity: the United Kingdom National Grid ESO Carbon Intensity
 API; the EirGrid Smart Grid Dashboard for the Republic of Ireland and Northern Ireland; and the United States
 Energy Information Administration API v2 for California and the Mid-Atlantic, with intensity derived from the
