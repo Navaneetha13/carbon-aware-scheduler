@@ -14,6 +14,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{mathptmx}
 \usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{booktabs}
@@ -21,11 +22,11 @@
 \usepackage{tcolorbox}
 
 \definecolor{cmt}{rgb}{0.30,0.30,0.30}
-\newcommand{\R}[1]{\vspace{2pt}\noindent\textbf{Response.} #1\par\vspace{6pt}}
-\newcommand{\Where}[1]{\noindent\textit{Where addressed:} #1\par\vspace{10pt}}
-\newcommand{\TODO}{\vspace{2pt}\noindent\textbf{Response.}
+\newcommand{\rsp}[1]{\vspace{2pt}\noindent\textbf{Response.} #1\par\vspace{6pt}}
+\newcommand{\rwhere}[1]{\noindent\textit{Where addressed:} #1\par\vspace{10pt}}
+\newcommand{\rpending}{\vspace{2pt}\noindent\textbf{Response.}
   \textcolor{red}{\textbf{[TO BE COMPLETED BY SUPERVISOR]}}\par\vspace{10pt}}
-\newenvironment{comment}[1]
+\newenvironment{revcomment}[1]
   {\begin{tcolorbox}[colback=gray!6,colframe=gray!45,boxrule=0.4pt,
      left=6pt,right=6pt,top=4pt,bottom=4pt]\textbf{#1}\\[2pt]\itshape\color{cmt}}
   {\end{tcolorbox}\vspace{4pt}}
@@ -92,12 +93,12 @@ All artefacts are archived at \url{https://doi.org/10.5281/zenodo.22125797}.
 \section{Reviewer 2}
 
 \subsection*{Host and power model}
-\begin{comment}{Comment R2.1}
+\begin{revcomment}{Comment R2.1}
 Justify $P_{\text{idle}} = 100$\,W, $P_{\text{max}} = 250$\,W and normalized
 capacity $C = 1$. Consider heterogeneous hosts, non-linear power models,
 startup/shutdown overheads and minimum active-host constraints.
-\end{comment}
-\R{The endpoints are now justified in the text as a mid-range two-socket volume
+\end{revcomment}
+\rsp{The endpoints are now justified in the text as a mid-range two-socket volume
 server: idle draw of roughly 40\,\% of peak is typical of published SPECpower
 results, and the 150\,W dynamic range spans the CPU-dominated portion of the
 envelope. Because a linear model flatters consolidation, two further models with
@@ -120,16 +121,16 @@ pool that cannot scale to zero. This reverses the comparison with the greedy
 heuristic in our favour---12 of 12 configurations rather than 3 of 12---because
 deferral now costs idle energy. It also removes most of the benefit of seeding,
 which we report as a limitation.}
-\Where{Section~3.2 (energy and carbon model); Sections~5.6, 5.7 and 5.8;
+\rwhere{Section~3.2 (energy and carbon model); Sections~5.6, 5.7 and 5.8;
 Tables and figures therein.}
 
 \subsection*{Novelty claim}
-\begin{comment}{Comment R2.2}
+\begin{revcomment}{Comment R2.2}
 Strengthen the literature review and moderate unsupported claims such as ``first
 application.'' Clearly identify the contribution of carbon-aware seeding,
 SLA-aware optimization and predictive forecasting.
-\end{comment}
-\R{The priority claim has been removed from the abstract, the introduction and
+\end{revcomment}
+\rsp{The priority claim has been removed from the abstract, the introduction and
 the research-gap subsection. We now state plainly that WOA has been applied to
 cloud task scheduling in enhanced form, and that carbon-aware metaheuristic
 scheduling is established, citing work from 2022--2026. Twelve references have been
@@ -148,15 +149,15 @@ The headline figure is also decomposed, since most of it is not attributable to
 the proposed method: of the 83.25\,\% reduction, 80.50 percentage points come from
 consolidation alone, temporal shifting adds 2.06, and CA-WOA adds 0.69 over the
 carbon-aware greedy heuristic.}
-\Where{Abstract; Section~1 (contributions); Section~2.3; Section~2.5;
+\rwhere{Abstract; Section~1 (contributions); Section~2.3; Section~2.5;
 Table~1; Section~5.2.}
 
 \subsection*{Ablation study}
-\begin{comment}{Comment R2.3}
+\begin{revcomment}{Comment R2.3}
 Separate the contribution of standard WOA, improved/random initialization,
 carbon-aware initialization, and the forecasting component.
-\end{comment}
-\R{A five-arm ablation is reported under both energy models, with 30 seeds. Two
+\end{revcomment}
+\rsp{A five-arm ablation is reported under both energy models, with 30 seeds. Two
 results carry the argument. First, carbon-aware seeding improves quality in 59 of
 60 cells (mean $+2.51$ points under the published model, significant in 36 of 36;
 $+0.91$ under the capacity constraint, significant in 21 of 24). Second---and this
@@ -168,14 +169,14 @@ information, not from a more sophisticated sampling scheme.
 
 The forecasting component is ablated separately as predicted versus reactive
 versus perfect-foresight scheduling at identical optimisation budgets.}
-\Where{Section~5.4 and Table~6; Section~5.11 (forecast coupling).}
+\rwhere{Section~5.4 and Table~6; Section~5.11 (forecast coupling).}
 
 \subsection*{Fitness-weight sensitivity}
-\begin{comment}{Comment R2.4}
+\begin{revcomment}{Comment R2.4}
 Evaluate different $\alpha$, $\beta$ and $\gamma$ values and justify the selected
 weights $\alpha = 0.4$, $\beta = 0.3$ and $\gamma = 0.3$.
-\end{comment}
-\R{Eleven weight combinations were evaluated over 30 seeds. Read on carbon alone
+\end{revcomment}
+\rsp{Eleven weight combinations were evaluated over 30 seeds. Read on carbon alone
 the result is misleading: $\alpha = 1.0$ attains the highest carbon reduction in
 the study (89.92\,\%) but violates 71.1\,\% of deadlines and overloads hosts by
 33.5\,\%. Removing $\beta$ or $\gamma$ likewise buys carbon only by breaking the
@@ -189,15 +190,15 @@ The seeded fraction was also swept: carbon varies by less than 0.3 points across
 fractions from 1/6 to 1, but variance falls sharply once seeding is enabled
 (standard deviation 0.381 to 0.111), so 1/3 is a reasonable rather than a uniquely
 optimal choice.}
-\Where{Section~5.5; Table~6 (rows with $\beta=0$ and $\gamma=0$).}
+\rwhere{Section~5.5; Table~6 (rows with $\beta=0$ and $\gamma=0$).}
 
 \subsection*{SLA validation}
-\begin{comment}{Comment R2.5}
+\begin{revcomment}{Comment R2.5}
 Provide absolute violation counts, per-run results and more demanding workloads.
 Consider hard constraints or a repair mechanism if zero SLA violation is a central
 claim.
-\end{comment}
-\R{Absolute violation counts are now reported alongside percentages, and raw
+\end{revcomment}
+\rsp{Absolute violation counts are now reported alongside percentages, and raw
 results are released with one row per configuration, method and seed, so per-run
 values are directly inspectable. Workloads increased from 60 tasks to 500--3000.
 
@@ -208,27 +209,27 @@ decoding the maximum SLA violation across the entire experiment is exactly
 aggressive optimisers under soft constraints violate a mean of 58.0\,\% (PSO),
 50.7\,\% (DE) and 35.4\,\% (GA) of deadlines at scale, so they are worse on both
 axes simultaneously.}
-\Where{Section~3.3 (metrics); Section~5.3; Table~5.}
+\rwhere{Section~3.3 (metrics); Section~5.3; Table~5.}
 
 \subsection*{Statistical validation}
-\begin{comment}{Comment R2.6}
+\begin{revcomment}{Comment R2.6}
 Use sufficient independent runs and report confidence intervals, significance
 tests, effect sizes and preferably per-seed results.
-\end{comment}
-\R{Every algorithm is now run over 30 independent seeds. Each comparison reports
+\end{revcomment}
+\rsp{Every algorithm is now run over 30 independent seeds. Each comparison reports
 mean, standard deviation and a 95\,\% confidence interval. Significance is assessed
 with \emph{both} Welch's $t$-test and the Mann--Whitney $U$ test---several methods
 have near-zero variance, where a $t$-test is ill-conditioned---and a difference is
 reported as significant only when both agree at $\alpha = 0.05$. Effect sizes are
 given as Cohen's $d$ and Cliff's $\delta$. Per-seed results are released in full.}
-\Where{Section~3.3; all result tables; archived per-seed CSV files.}
+\rwhere{Section~3.3; all result tables; archived per-seed CSV files.}
 
 \subsection*{Forecasting validation}
-\begin{comment}{Comment R2.7}
+\begin{revcomment}{Comment R2.7}
 Report forecast horizon, prediction procedure, additional metrics such as RMSE and
 MAPE/MASE where appropriate, and suitable naive/seasonal baselines.
-\end{comment}
-\R{The forecaster is now evaluated with direct multi-step prediction at horizons of
+\end{revcomment}
+\rsp{The forecaster is now evaluated with direct multi-step prediction at horizons of
 1, 6, 12, 24 and 48 slots, using MAE, RMSE, MAPE and MASE, against three naive
 baselines: persistence, seasonal-naive at 24 hours, and seasonal-naive at one week.
 Each model is trained five times and results are reported as mean $\pm$ standard
@@ -238,14 +239,14 @@ reproduce.
 At the 12-hour horizon the ensemble achieves MAE 26.09 $\pm$ 0.48\,gCO$_2$/kWh
 against 37.03 for the strongest naive baseline, a MASE of 0.59. Full
 hyperparameters are now tabulated.}
-\Where{Section~3.3; Section~5.10; Table~9; Figure~6.}
+\rwhere{Section~3.3; Section~5.10; Table~9; Figure~6.}
 
 \subsection*{Forecast--scheduling coupling}
-\begin{comment}{Comment R2.8}
+\begin{revcomment}{Comment R2.8}
 Clearly describe how predictions are supplied to CA-WOA, including forecast
 horizon, update frequency, online operation and the effect of forecast errors.
-\end{comment}
-\R{The coupling is now described explicitly and measured. A 12-hour-ahead
+\end{revcomment}
+\rsp{The coupling is now described explicitly and measured. A 12-hour-ahead
 ensemble forecast replaces the true carbon signal in the objective, and the
 resulting schedule is scored against the \emph{actual} signal. Predicted,
 reactive and perfect-foresight scheduling are compared at identical optimisation
@@ -260,14 +261,14 @@ regardless of accuracy. The corrected quantity is the fraction of the
 
 Forecast-error degradation is measured separately by injecting controlled error and
 observing the resulting scheduling penalty.}
-\Where{Section~5.11; Section~3.3.}
+\rwhere{Section~5.11; Section~3.3.}
 
 \subsection*{Computational scalability}
-\begin{comment}{Comment R2.9}
+\begin{revcomment}{Comment R2.9}
 Report runtime, memory usage, total objective-function evaluations and convergence
 behaviour as task count increases.
-\end{comment}
-\R{Runtime, peak memory and the number of function evaluations are recorded for
+\end{revcomment}
+\rsp{Runtime, peak memory and the number of function evaluations are recorded for
 every run, and convergence curves are retained per epoch. Runtime scales linearly
 in task count: WOA is the cheapest search at 1.54\,s and 0.99\,MB at 500 tasks,
 rising to 6.20\,s and 4.87\,MB at 3000; GA is the most expensive at 2.61 to
@@ -279,15 +280,15 @@ value by epoch 8 against 16, reaching a better final value. We also report a
 caveat that favours the competitors: GA and GWO had \emph{not} converged at the
 120-epoch budget, requiring 102 and 112 epochs respectively, so their results are
 lower bounds and this comparison understates them.}
-\Where{Section~5.9; Figure~5; runtime and memory tables.}
+\rwhere{Section~5.9; Figure~5; runtime and memory tables.}
 
 \subsection*{Reproducibility}
-\begin{comment}{Comment R2.10}
+\begin{revcomment}{Comment R2.10}
 Provide precise dataset references, preprocessing details, configuration files,
 seeds, code repository/persistent link or DOI, and sufficient artefacts to
 reproduce the experiments.
-\end{comment}
-\R{All code, data, per-seed raw results and the analysis scripts are archived at
+\end{revcomment}
+\rsp{All code, data, per-seed raw results and the analysis scripts are archived at
 \url{https://doi.org/10.5281/zenodo.22125797} and mirrored on GitHub. Dataset
 references and preprocessing are specified in Section~3.1, including the sampling
 correction described under Comment~R2.11 below. Seeds are fixed and enumerated
@@ -300,7 +301,7 @@ $9.3 \times 10^{-16}$, machine precision) and that the setup reproduces the
 originally published Table~4 exactly. Two experiments are deliberately retained
 and labelled \texttt{INVALID}, documenting modelling errors that we detected and
 corrected during the revision.}
-\Where{Section~3.3; Availability of Data and Materials; archived artefact.}
+\rwhere{Section~3.3; Availability of Data and Materials; archived artefact.}
 
 \bigskip
 \hrule
@@ -308,11 +309,11 @@ corrected during the revision.}
 
 \section{Reviewer 2: Essential additional experiments}
 
-\begin{comment}{Comment R2.11}
+\begin{revcomment}{Comment R2.11}
 Ablation: WOA; WOA + carbon-aware seeding; CA-WOA without SLA term; CA-WOA without
 overload/cost term; full CA-WOA.
-\end{comment}
-\R{All five arms are reported, plus the greedy-only baseline and the carbon-blind
+\end{revcomment}
+\rsp{All five arms are reported, plus the greedy-only baseline and the carbon-blind
 ``improved'' initialisation, over 30 seeds under both energy models. See
 Comment~R2.3.
 
@@ -324,13 +325,13 @@ available slots, leaving a temporal-shifting scheduler almost nothing to shift.
 The same concentration inflated the derived host count from 1 to 5. Tasks are now
 sampled at an even stride across all 52{,}057 usable records, preserving the real
 submission ordering.}
-\Where{Section~5.4; Section~3.1.}
+\rwhere{Section~5.4; Section~3.1.}
 
-\begin{comment}{Comment R2.12}
+\begin{revcomment}{Comment R2.12}
 Compare against an earliest-deadline-first + lowest-carbon-slot heuristic and a
 constrained-scheduling optimization method.
-\end{comment}
-\R{The EDF + lowest-carbon-slot heuristic is implemented and appears in every
+\end{revcomment}
+\rsp{The EDF + lowest-carbon-slot heuristic is implemented and appears in every
 results table. It is a strong baseline in the unconstrained regime---so strong that
 we prove it is \emph{optimal} there (Lemma~1): in the temporal model the objective
 is separable across tasks, so choosing each task's lowest-carbon feasible slot
@@ -349,63 +350,63 @@ method is addressed \emph{theoretically} rather than implemented: the problem is
 formulated exactly as a mixed-integer linear program, with the complexity argument
 and the role of an exact solve as an optimality-gap reference given in
 Section~4.4. We identify a full MILP solve as future work.}
-\Where{Section~4.4 (formulation and Lemma~1); Section~5.3; all results tables.}
+\rwhere{Section~4.4 (formulation and Lemma~1); Section~5.3; all results tables.}
 
-\begin{comment}{Comment R2.13}
+\begin{revcomment}{Comment R2.13}
 Sensitivity analysis for fitness weights and seeded-population percentage.
-\end{comment}
-\R{Both are reported: eleven weight combinations and six seeded fractions from 0 to
+\end{revcomment}
+\rsp{Both are reported: eleven weight combinations and six seeded fractions from 0 to
 1, each over 30 seeds. See Comment~R2.4.}
-\Where{Section~5.5.}
+\rwhere{Section~5.5.}
 
-\begin{comment}{Comment R2.14}
+\begin{revcomment}{Comment R2.14}
 Use at least 20--30 independent random seeds, or provide a statistically justified
 alternative with confidence intervals.
-\end{comment}
-\R{Thirty independent seeds are used throughout, with 95\,\% confidence intervals,
+\end{revcomment}
+\rsp{Thirty independent seeds are used throughout, with 95\,\% confidence intervals,
 two significance tests and two effect-size measures. See Comment~R2.6.}
-\Where{Section~3.3; all results tables.}
+\rwhere{Section~3.3; all results tables.}
 
-\begin{comment}{Comment R2.15}
+\begin{revcomment}{Comment R2.15}
 Report convergence curves and total objective-function evaluations.
-\end{comment}
-\R{Convergence curves are reported per epoch with dispersion bands, and the
+\end{revcomment}
+\rsp{Convergence curves are reported per epoch with dispersion bands, and the
 evaluation count is recorded for every run---which is how the unequal-budget
 problem was detected. See Comment~R2.9.}
-\Where{Figure~5; Section~5.9.}
+\rwhere{Figure~5; Section~5.9.}
 
-\begin{comment}{Comment R2.16}
+\begin{revcomment}{Comment R2.16}
 Report runtime and memory consumption for all algorithms at 50, 100, 200 and 300
 tasks.
-\end{comment}
-\R{Runtime and memory are reported at exactly those four task counts, in addition
+\end{revcomment}
+\rsp{Runtime and memory are reported at exactly those four task counts, in addition
 to the 500--3000 range used for the main study. WOA runs in 0.89\,s at 50 tasks and
 1.24\,s at 300.}
-\Where{Section~5.9.}
+\rwhere{Section~5.9.}
 
-\begin{comment}{Comment R2.17}
+\begin{revcomment}{Comment R2.17}
 Evaluate multiple workload subsets rather than relying on one fixed 60-task sample.
-\end{comment}
-\R{Four disjoint subsets of the Google trace are evaluated, and the NASA-iPSC log
+\end{revcomment}
+\rsp{Four disjoint subsets of the Google trace are evaluated, and the NASA-iPSC log
 from the Parallel Workloads Archive is added as an independent workload with a
 genuine 92-day arrival process. CA-WOA is stable across the Google subsets
 (standard deviation 0.13 to 0.59) and wins all six NASA configurations. On NASA the
 SLA contrast is far starker: PSO, DE and GA miss 38--64\,\% of deadlines while
 CA-WOA stays below 0.5\,\%.}
-\Where{Section~3.1; Section~5.12.}
+\rwhere{Section~3.1; Section~5.12.}
 
-\begin{comment}{Comment R2.18}
+\begin{revcomment}{Comment R2.18}
 Test heterogeneous host capacities and more realistic power-consumption models.
-\end{comment}
-\R{Both are now tested: three fleet compositions including an adversarial one, and
+\end{revcomment}
+\rsp{Both are now tested: three fleet compositions including an adversarial one, and
 three power models. See Comment~R2.1.}
-\Where{Sections~5.6 and 5.8.}
+\rwhere{Sections~5.6 and 5.8.}
 
-\begin{comment}{Comment R2.19}
+\begin{revcomment}{Comment R2.19}
 Evaluate multiple carbon-intensity traces/regions or justify the representativeness
 of the UK signal.
-\end{comment}
-\R{Five real half-hourly regional traces are now used, spanning the same 111-day
+\end{revcomment}
+\rsp{Five real half-hourly regional traces are now used, spanning the same 111-day
 period: the United Kingdom (National Grid ESO), the Republic of Ireland and
 Northern Ireland (EirGrid Smart Grid Dashboard), and California and the
 Mid-Atlantic (US EIA, with intensity derived from the hourly generation mix using
@@ -416,25 +417,25 @@ $12.30\times$ down to $1.78\times$.
 Separately, the experiment was repeated across all 37 disjoint three-day windows in
 the UK record, confirming that the single window used in the submitted version was
 not unrepresentative.}
-\Where{Section~3.1 and Table~2; Section~5.12; Figure~4.}
+\rwhere{Section~3.1 and Table~2; Section~5.12; Figure~4.}
 
-\begin{comment}{Comment R2.20}
+\begin{revcomment}{Comment R2.20}
 Test forecast degradation and quantify scheduling performance under increasing
 forecast error.
-\end{comment}
-\R{Controlled error is injected into the carbon signal at increasing magnitudes and
+\end{revcomment}
+\rsp{Controlled error is injected into the carbon signal at increasing magnitudes and
 the resulting scheduling penalty is measured, so the sensitivity of carbon
 reduction to forecast quality is quantified directly rather than inferred.}
-\Where{Section~5.11.}
+\rwhere{Section~5.11.}
 
-\begin{comment}{Comment R2.21}
+\begin{revcomment}{Comment R2.21}
 Compare predicted-carbon, reactive and perfect-foresight scheduling using identical
 optimization budgets.
-\end{comment}
-\R{All three are compared at an identical budget of 4{,}840 objective evaluations.
+\end{revcomment}
+\rsp{All three are compared at an identical budget of 4{,}840 objective evaluations.
 The forecast recovers 73--89\,\% of the advantage that perfect foresight holds over
 reactive scheduling. See Comment~R2.8.}
-\Where{Section~5.11.}
+\rwhere{Section~5.11.}
 
 \bigskip
 \hrule
@@ -442,21 +443,21 @@ reactive scheduling. See Comment~R2.8.}
 
 \section{Reviewer 2: Presentation corrections}
 
-\begin{comment}{Comment R2.22}
+\begin{revcomment}{Comment R2.22}
 Correct grammatical and wording errors.
-\end{comment}
-\R{The manuscript has been revised throughout. Specific instances addressed
+\end{revcomment}
+\rsp{The manuscript has been revised throughout. Specific instances addressed
 include vague quantifiers (``up to about 87\,\%'' replaced with the figure and its
 configuration), unsupported editorialising about the proposed method, and undefined
 qualitative claims such as ``scales safely'', which is now stated as the
 measurable property it refers to.}
-\Where{Throughout.}
+\rwhere{Throughout.}
 
-\begin{comment}{Comment R2.23}
+\begin{revcomment}{Comment R2.23}
 Use consistent terminology for carbon intensity, carbon-aware scheduling, carbon
 reduction and emissions.
-\end{comment}
-\R{One term is now used per concept throughout: \emph{carbon intensity}
+\end{revcomment}
+\rsp{One term is now used per concept throughout: \emph{carbon intensity}
 (gCO$_2$/kWh), \emph{carbon-aware scheduling}, \emph{carbon reduction} (\%) and
 \emph{emissions} (kgCO$_2$).
 
@@ -465,21 +466,21 @@ and ``VM'' interchangeably, including ``10 VMs and 20 VMs''. The simulation plac
 \emph{tasks} on \emph{hosts} of capacity $C$ and does not model virtual machines at
 all. The term VM has been removed and a note added making the distinction
 explicit.}
-\Where{Abbreviations block; throughout.}
+\rwhere{Abbreviations block; throughout.}
 
-\begin{comment}{Comment R2.24}
+\begin{revcomment}{Comment R2.24}
 Define all abbreviations at first use.
-\end{comment}
-\R{An abbreviations block has been added after the keywords, defining nineteen
+\end{revcomment}
+\rsp{An abbreviations block has been added after the keywords, defining nineteen
 terms. It also records that ``CI'' is reserved for carbon intensity, with
 ``95\,\% confidence interval'' always written out in full, since the submitted
 version used CI for both.}
-\Where{Abbreviations block, after the keywords.}
+\rwhere{Abbreviations block, after the keywords.}
 
-\begin{comment}{Comment R2.25}
+\begin{revcomment}{Comment R2.25}
 Improve figure readability and include units, legends and error information.
-\end{comment}
-\R{All figures have been regenerated from the raw per-seed results at 300\,dpi.
+\end{revcomment}
+\rsp{All figures have been regenerated from the raw per-seed results at 300\,dpi.
 Every axis label carries units; legends sit clear of the data; every mean carries a
 95\,\% confidence interval or standard deviation; and the proposed method is
 distinguished by marker and hatch as well as colour so the figures survive
@@ -488,46 +489,46 @@ and the relationship between seeding benefit and grid carbon variability.
 
 Where a figure uses a truncated vertical axis, the caption states the actual spread
 so the visual separation is not read as larger than it is.}
-\Where{Figures 1--6.}
+\rwhere{Figures 1--6.}
 
-\begin{comment}{Comment R2.26}
+\begin{revcomment}{Comment R2.26}
 Add standard deviations or confidence intervals to relevant tables.
-\end{comment}
-\R{All result tables now report dispersion over 30 seeds. See Comment~R2.6.}
-\Where{All results tables.}
+\end{revcomment}
+\rsp{All result tables now report dispersion over 30 seeds. See Comment~R2.6.}
+\rwhere{All results tables.}
 
-\begin{comment}{Comment R2.27}
+\begin{revcomment}{Comment R2.27}
 Provide complete forecasting-model hyperparameters.
-\end{comment}
-\R{Full hyperparameters are tabulated: look-back window, forecast horizons,
+\end{revcomment}
+\rsp{Full hyperparameters are tabulated: look-back window, forecast horizons,
 convolution filters and kernel size, pooling, recurrent unit counts, gradient
 boosting configuration, optimiser, loss, epochs, batch size, train/test split,
 feature set, scaling procedure (fitted on the training split only) and the random
 seed.}
-\Where{Table~9, Section~5.10.}
+\rwhere{Table~9, Section~5.10.}
 
-\begin{comment}{Comment R2.28}
+\begin{revcomment}{Comment R2.28}
 Correct the ``Availability of data and materials: NA'' statement because public
 datasets are used.
-\end{comment}
-\R{Corrected. A full availability statement now names all three workload and five
+\end{revcomment}
+\rsp{Corrected. A full availability statement now names all three workload and five
 carbon data sources, all of which are public, together with the archived artefact
 DOI.}
-\Where{Availability of Data and Materials.}
+\rwhere{Availability of Data and Materials.}
 
-\begin{comment}{Comment R2.29}
+\begin{revcomment}{Comment R2.29}
 Provide a persistent code repository link/DOI if permitted.
-\end{comment}
-\R{The artefact is archived with a persistent DOI:
+\end{revcomment}
+\rsp{The artefact is archived with a persistent DOI:
 \url{https://doi.org/10.5281/zenodo.22125797}. The concept DOI is cited so that it
 continues to resolve if further versions are deposited.}
-\Where{Availability of Data and Materials.}
+\rwhere{Availability of Data and Materials.}
 
-\begin{comment}{Comment R2.30}
+\begin{revcomment}{Comment R2.30}
 Clarify whether time-of-use tariff values are actually included in the reported
 objective/results.
-\end{comment}
-\R{Clarified, and the honest answer is that the tariff is present but carries
+\end{revcomment}
+\rsp{Clarified, and the honest answer is that the tariff is present but carries
 almost no information. It enters the objective through the cost term, but because
 every method schedules the same total workload and the tariff peak does not
 coincide with the carbon peak, cost is effectively constant: identical to three
@@ -537,27 +538,27 @@ altering any ranking. Cost is therefore reported for completeness and explicitly
 \emph{not} presented as a co-optimised objective. We also state that the UK tariff
 is applied unchanged to the non-UK regions as a cost proxy, not as a claim about
 local pricing.}
-\Where{Section~3.2.}
+\rwhere{Section~3.2.}
 
-\begin{comment}{Comment R2.31}
+\begin{revcomment}{Comment R2.31}
 Use consistent units for energy, emissions, carbon intensity and monetary cost.
-\end{comment}
-\R{Units are now consistent throughout and stated in every table header: energy in
+\end{revcomment}
+\rsp{Units are now consistent throughout and stated in every table header: energy in
 kWh, emissions in kgCO$_2$, carbon intensity in gCO$_2$/kWh, power in W, cost in
 GBP, makespan in hours, runtime in seconds and memory in MB.}
-\Where{Throughout; all table headers.}
+\rwhere{Throughout; all table headers.}
 
-\begin{comment}{Comment R2.32}
+\begin{revcomment}{Comment R2.32}
 Check reference metadata, DOI information and formatting.
-\end{comment}
-\R{Every entry in the bibliography was resolved against Crossref before use. The
+\end{revcomment}
+\rsp{Every entry in the bibliography was resolved against Crossref before use. The
 reference list has grown from 19 entries to 31, all cited in the text, all carrying
 DOIs. Two metadata inconsistencies in the original list were corrected.
 
 One entry was deliberately \emph{not} added: a preprint for which only an SSRN
 record exists and the journal version is still in press. We prefer to omit it than
 to cite a version of record that does not yet exist.}
-\Where{Bibliography.}
+\rwhere{Bibliography.}
 
 \bigskip
 \hrule
@@ -565,18 +566,18 @@ to cite a version of record that does not yet exist.}
 
 \section{Reviewer 3}
 
-\begin{comment}{Comment R3.1}
+\begin{revcomment}{Comment R3.1}
 Add evaluation on multiple carbon intensity datasets and newer traces.
-\end{comment}
-\R{Five real regional carbon-intensity datasets are now used, and the NASA-iPSC
+\end{revcomment}
+\rsp{Five real regional carbon-intensity datasets are now used, and the NASA-iPSC
 workload trace has been added alongside the Google trace. See Comment~R2.19.}
-\Where{Section~3.1, Table~2; Section~5.12.}
+\rwhere{Section~3.1, Table~2; Section~5.12.}
 
-\begin{comment}{Comment R3.2}
+\begin{revcomment}{Comment R3.2}
 Include stronger baselines (at least one carbon-aware heuristic, one modern
 scheduler).
-\end{comment}
-\R{Two published policies were implemented in the same simulator, using no fitness
+\end{revcomment}
+\rsp{Two published policies were implemented in the same simulator, using no fitness
 function and no metaheuristic machinery, so they are independent of the proposed
 method: the virtual-capacity-curve load-shaping policy of Google's production
 carbon-aware scheduler, and threshold-based temporal shifting from
@@ -589,52 +590,52 @@ configurations, by 4.48 percentage points at 500 tasks narrowing to 0.35 at 3000
 The threshold policy shifts load toward greener slots but has no capacity
 awareness and remains infeasible, which shows that carbon awareness alone is
 insufficient.}
-\Where{Section~5.3; Table~5.}
+\rwhere{Section~5.3; Table~5.}
 
-\begin{comment}{Comment R3.3}
+\begin{revcomment}{Comment R3.3}
 Provide statistical significance tests for all comparisons.
-\end{comment}
-\R{Both Welch's $t$-test and the Mann--Whitney $U$ test are applied to every
+\end{revcomment}
+\rsp{Both Welch's $t$-test and the Mann--Whitney $U$ test are applied to every
 comparison, with significance claimed only when both agree at $\alpha = 0.05$,
 alongside Cohen's $d$ and Cliff's $\delta$. See Comment~R2.6.}
-\Where{Section~3.3; all results tables.}
+\rwhere{Section~3.3; all results tables.}
 
-\begin{comment}{Comment R3.4}
+\begin{revcomment}{Comment R3.4}
 Clarify the forecast horizon and include multi-step forecasting evaluation.
-\end{comment}
-\R{Direct multi-step prediction is now evaluated at five horizons from 30 minutes
+\end{revcomment}
+\rsp{Direct multi-step prediction is now evaluated at five horizons from 30 minutes
 to 24 hours, with four error metrics and three naive baselines. See
 Comment~R2.7.}
-\Where{Section~5.10; Figure~6.}
+\rwhere{Section~5.10; Figure~6.}
 
-\begin{comment}{Comment R3.5}
+\begin{revcomment}{Comment R3.5}
 Add sensitivity analysis for fitness function weights.
-\end{comment}
-\R{Eleven weight combinations are evaluated over 30 seeds, and the selected weights
+\end{revcomment}
+\rsp{Eleven weight combinations are evaluated over 30 seeds, and the selected weights
 are justified by the constraint surface rather than by the headline figure. See
 Comment~R2.4.}
-\Where{Section~5.5.}
+\rwhere{Section~5.5.}
 
-\begin{comment}{Comment R3.6}
+\begin{revcomment}{Comment R3.6}
 Include computational cost analysis of CA-WOA.
-\end{comment}
-\R{Runtime, peak memory, evaluation counts and convergence behaviour are reported
+\end{revcomment}
+\rsp{Runtime, peak memory, evaluation counts and convergence behaviour are reported
 across the full task-count range and at the smaller counts used in comparable
 studies. See Comment~R2.9.}
-\Where{Section~5.9.}
+\rwhere{Section~5.9.}
 
-\begin{comment}{Comment R3.7}
+\begin{revcomment}{Comment R3.7}
 Conduct ablation study on carbon-aware seeding.
-\end{comment}
-\R{Reported across six optimisers and two energy models: seeding improves quality
+\end{revcomment}
+\rsp{Reported across six optimisers and two energy models: seeding improves quality
 in 59 of 60 cells, and the carbon-blind initialisation control isolates the source
 of that benefit. See Comment~R2.3.}
-\Where{Section~5.4; Table~6.}
+\rwhere{Section~5.4; Table~6.}
 
-\begin{comment}{Comment R3.8}
+\begin{revcomment}{Comment R3.8}
 Add theoretical convergence analysis.
-\end{comment}
-\R{A convergence analysis has been added. The decoded search space is finite, so
+\end{revcomment}
+\rsp{A convergence analysis has been added. The decoded search space is finite, so
 the objective takes finitely many values separated by a positive gap, and the
 population sequence forms a \emph{non-homogeneous} Markov chain because WOA's
 control parameter decreases to zero. Theorem~1 establishes that with elitism the
@@ -653,12 +654,12 @@ statistically significant improvement. Corollary~2: seeding a known schedule bou
 the limit by that schedule's quality, so CA-WOA provably cannot be worse than the
 heuristic it seeds. Proposition~1 combines this with Lemma~1 to show that in the
 temporal model CA-WOA attains the global optimum in one epoch.}
-\Where{Section~4.5 (Theorem~1, Corollaries 1--2, Proposition~1).}
+\rwhere{Section~4.5 (Theorem~1, Corollaries 1--2, Proposition~1).}
 
-\begin{comment}{Comment R3.9}
+\begin{revcomment}{Comment R3.9}
 Include at least one additional carbon region (US or EU).
-\end{comment}
-\R{Four additional regions are included: the Republic of Ireland, Northern Ireland,
+\end{revcomment}
+\rsp{Four additional regions are included: the Republic of Ireland, Northern Ireland,
 California and the US Mid-Atlantic. The seeding effect holds in every region
 ($+0.64$ to $+1.98$ percentage points, all $p < 10^{-9}$).
 
@@ -669,22 +670,22 @@ by 0.13 points. Temporal shifting requires a low-carbon trough to exploit; where
 grid is uniformly carbon-intense there is nothing to shift into. We regard
 identifying this deployment condition as a useful result rather than a negative
 one.}
-\Where{Section~3.1, Table~2; Section~5.12; Figure~4; Section~6 (Limitations).}
+\rwhere{Section~3.1, Table~2; Section~5.12; Figure~4; Section~6 (Limitations).}
 
-\begin{comment}{Comment R3.10}
+\begin{revcomment}{Comment R3.10}
 Report results with standard deviations for all experiments.
-\end{comment}
-\R{All experiments report standard deviations and 95\,\% confidence intervals over
+\end{revcomment}
+\rsp{All experiments report standard deviations and 95\,\% confidence intervals over
 30 seeds, and per-seed values are released. See Comment~R2.6.}
-\Where{All results tables; archived artefact.}
+\rwhere{All results tables; archived artefact.}
 
-\begin{comment}{Comment R3.11}
+\begin{revcomment}{Comment R3.11}
 Review all citations. The introduction fails to engage with recent, highly relevant
 works from 2023--2025. \\
 \texttt{10.3390/en17112539}; \texttt{10.3390/electronics13173552};\\
 \texttt{10.32604/cmes.2025.065098}; \texttt{10.3390/en17215412}
-\end{comment}
-\R{The bibliography has been reviewed in full and expanded from 19 to 31 entries,
+\end{revcomment}
+\rsp{The bibliography has been reviewed in full and expanded from 19 to 31 entries,
 every DOI resolved against Crossref. The introduction and related-work sections now
 engage with carbon-aware scheduling work from 2022 to 2026, and Table~1 has been
 extended accordingly.
@@ -703,7 +704,7 @@ identify a substantive connection to cloud task scheduling, carbon-aware computi
 or metaheuristic optimisation that would let us cite them accurately, and we
 preferred not to include citations we could not motivate in the text. We would of
 course reconsider if the reviewer can indicate the intended connection.}
-\Where{Section~2.4; Table~1; Bibliography.}
+\rwhere{Section~2.4; Table~1; Bibliography.}
 
 \bigskip
 \hrule
@@ -712,23 +713,23 @@ course reconsider if the reviewer can indicate the intended connection.}
 \section*{Items awaiting supervisor input}
 The following are left blank deliberately, as agreed.
 
-\begin{comment}{Item S.1}
+\begin{revcomment}{Item S.1}
 Whether a full MILP solve should be attempted for the camera-ready version to
 provide optimality gaps, or whether the theoretical treatment in Section~4.4 is
 sufficient as submitted.
-\end{comment}
-\TODO
+\end{revcomment}
+\rpending
 
-\begin{comment}{Item S.2}
+\begin{revcomment}{Item S.2}
 Whether the response to Comment~R3.11 regarding the two uncited suggested
 references should be softened, expanded, or removed.
-\end{comment}
-\TODO
+\end{revcomment}
+\rpending
 
-\begin{comment}{Item S.3}
+\begin{revcomment}{Item S.3}
 Whether any declaration regarding the use of generative AI tools during the
 revision is required by the submission venue, and if so its wording.
-\end{comment}
-\TODO
+\end{revcomment}
+\rpending
 
 \end{document}
