@@ -1068,9 +1068,10 @@ This research asked whether a carbon-aware enhancement of the Whale Optimization
 predictive forecasting, could reduce the carbon emissions of cloud scheduling without increasing SLA
 violations, and whether the advantage would hold at scale. All four objectives were met: the state of the art
 was reviewed and a gap identified; CA-WOA was designed with carbon-aware seeding and an SLA- and
-overload-penalised fitness function; the scheduler and an ensemble carbon forecaster were implemented on real
-Google and UK National Grid data; and the approach was evaluated against baselines and metaheuristics across
-workload sizes.
+overload-penalised fitness function; the scheduler and an ensemble carbon forecaster were implemented on the
+real Google Cluster and NASA-iPSC traces and five regional grid carbon-intensity series; and the approach was
+evaluated against deterministic baselines, five standard metaheuristics and two published schedulers across
+task counts from 500 to 3000 on 10 and 20 hosts, over 30 independent seeds.
 
 The key findings are four. First, carbon-aware temporal shifting is only a hard problem once host capacity
 binds: without that constraint the objective is separable and a greedy earliest-deadline, lowest-carbon rule

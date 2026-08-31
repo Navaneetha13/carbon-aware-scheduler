@@ -1,7 +1,7 @@
 % =====================================================================
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL main.tex.submitted-backup   Wed Aug 26 17:44:53 2026
-%DIF ADD main.tex                    Mon Aug 31 15:09:29 2026
+%DIF ADD main.tex                    Mon Aug 31 15:12:31 2026
 %  MSc Research Project - IEEE-style single-column report (NCI structure)
 %  Navaneetha Thalakokkula (23213914) - MSc Cloud Computing, NCI
 %  HOW TO USE: create a Blank Project in Overleaf, delete main.tex content,
@@ -1342,9 +1342,12 @@ This research asked whether a carbon-aware enhancement of the Whale Optimization
 predictive forecasting, could reduce the carbon emissions of cloud scheduling without increasing SLA
 violations, and whether the advantage would hold at scale. All four objectives were met: the state of the art
 was reviewed and a gap identified; CA-WOA was designed with carbon-aware seeding and an SLA- and
-overload-penalised fitness function; the scheduler and an ensemble carbon forecaster were implemented on real
-Google and UK National Grid data; and the approach was evaluated against baselines and metaheuristics across
-workload sizes.
+overload-penalised fitness function; the scheduler and an ensemble carbon forecaster were implemented on \DIFdelbegin \DIFdel{real
+Google and UK National Grid data}\DIFdelend \DIFaddbegin \DIFadd{the
+real Google Cluster and NASA-iPSC traces and five regional grid carbon-intensity series}\DIFaddend ; and the approach was
+evaluated against \DIFdelbegin \DIFdel{baselines and metaheuristics across
+workload sizes}\DIFdelend \DIFaddbegin \DIFadd{deterministic baselines, five standard metaheuristics and two published schedulers across
+task counts from 500 to 3000 on 10 and 20 hosts, over 30 independent seeds}\DIFaddend .
 
 The key findings are \DIFdelbegin \DIFdel{that CA-WOA achieves the highest carbon reduction among SLA-safe methods, up to about
 83\% under the capacity model,
