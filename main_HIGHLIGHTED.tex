@@ -1,7 +1,7 @@
 % =====================================================================
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL main.tex.submitted-backup   Wed Aug 26 17:44:53 2026
-%DIF ADD main.tex                    Thu Aug 27 15:48:31 2026
+%DIF ADD main.tex                    Mon Aug 31 14:42:36 2026
 %  MSc Research Project - IEEE-style single-column report (NCI structure)
 %  Navaneetha Thalakokkula (23213914) - MSc Cloud Computing, NCI
 %  HOW TO USE: create a Blank Project in Overleaf, delete main.tex content,
@@ -980,10 +980,7 @@ VCC (Google)              & 0.00 & 0.00 & 0.00  & 0.00  & 0.00  & 0.00 \\
 \end{table}
 
 \DIFadd{Among feasible schedules CA-WOA is best in 9 of 12 configurations. It is beaten by GA in three cells, all at
-$M=10$ with $N\ge1500$, by 0.08 }\DIFaddend to \DIFdelbegin \DIFdel{59\%, and PSO from about 13\% to 41\%,
-so the methods that superficially match CA-WOA on carbon
-become progressively less viable.
-This shows that }\DIFdelend \DIFaddbegin \DIFadd{0.15 percentage points---reported here rather than omitted. Its variance is
+$M=10$ with $N\ge1500$, by 0.08 }\DIFaddend to \DIFdelbegin \DIFdel{59\%, and PSO from about 13\%}\DIFdelend \DIFaddbegin \DIFadd{0.15 percentage points---reported here rather than omitted. Its variance is
 also higher than its rivals' (standard deviation up to 0.33 against GA's 0.03), so it finds better schedules
 less consistently.
 }
@@ -994,7 +991,7 @@ metaheuristic machinery: the virtual-capacity-curve (VCC) load-shaping policy of
 carbon-aware scheduler \cite{radovanovic2023carbon}, which throttles per-slot capacity as a function of carbon
 intensity; and threshold-based temporal shifting \cite{wiesner2021lets}. VCC's throttle floor was swept over
 eight values so that the baseline is not weakened by an arbitrary parameter choice; it proved insensitive
-(85.02--85.11\% at 1000 tasks). Only VCC and the metaheuristics are feasible everywhere. }\DIFaddend CA-WOA \DIFdelbegin \DIFdel{'s reliability is preserved as the workload grows, which is the property a production scheduler requires}\DIFdelend \DIFaddbegin \DIFadd{beats VCC in
+(85.02--85.11\% at 1000 tasks). Only VCC and the metaheuristics are feasible everywhere. CA-WOA beats VCC in
 \textbf{12 of 12} configurations, by 4.48 percentage points at 500 tasks narrowing to 0.35 at 3000, and by
 4.01 points on average across heterogeneous fleets. The threshold policy shifts load toward green slots but
 has no capacity awareness and remains infeasible at 28.54\% overload, which shows that carbon awareness alone
@@ -1007,7 +1004,7 @@ improves final quality in \textbf{59 of 60} (optimiser, configuration) cells acr
 GA---mean $+2.51$ points under the published model, significant in 36 of 36, and $+0.91$ under the feasibility
 constraint, significant in 21 of 24. The contribution is therefore a transferable initialisation strategy, not
 a property of WOA. Second, an ``improved'' initialisation using Latin-hypercube and opposition-based sampling
-but \emph{no carbon data} is statistically indistinguishable from uniform random ($+0.003$ to $+0.027$ points,
+but \emph{no carbon data} is statistically indistinguishable from uniform random ($+0.003$ }\DIFaddend to \DIFdelbegin \DIFdel{41\% , so the methods that superficially match }\DIFdelend \DIFaddbegin \DIFadd{$+0.027$ points,
 $p$ = 0.06 to 0.94). The benefit comes from the carbon information, not from more sophisticated sampling.
 }
 
@@ -1041,7 +1038,8 @@ from 1/6 to 1, but variance falls sharply once seeding is enabled (standard devi
 }
 
 \subsection{\DIFadd{Power models}}\label{sec:power}
-\DIFadd{CA-WOA ranks first in all six configurations under each of the linear, cubic and piecewise power models---18 of
+\DIFaddend CA-WOA \DIFdelbegin \DIFdel{on carbon
+become progressively less viable. This shows that }\DIFdelend \DIFaddbegin \DIFadd{ranks first in all six configurations under each of the linear, cubic and piecewise power models---18 of
 18. Its margin is in fact \emph{widest} under the cubic model ($+0.84$ points over HHO at 500 tasks), because
 a convex power curve penalises the spread-out schedules that unseeded optimisers produce. The conclusions are
 therefore not an artefact of the linear assumption, which was the concern behind the request.
@@ -1050,7 +1048,7 @@ therefore not an artefact of the linear assumption, which was the concern behind
 \subsection{\DIFadd{Minimum active-host constraint}}\label{sec:mmin}
 \DIFadd{A data centre cannot scale to zero. With a workload-determined warm pool powered across the operating window,
 deferral becomes costly because shifting work extends that window. This single constraint \textbf{reverses} the
-comparison with the greedy heuristic: without it CA-WOA wins 3 of 12 configurations, with it 12 of 12 (mean
+comparison with the greedy heuristic: without it }\DIFaddend CA-WOA \DIFaddbegin \DIFadd{wins 3 of 12 configurations, with it 12 of 12 (mean
 $+0.80$ to $+1.55$ points). The realistic setting is thus the favourable one. However---and this is the most
 important limitation in this report---the advantage of \emph{seeding} over plain WOA collapses in the same
 regime, from $+1.30$ points to $+0.04$, significant in only 1 of 12 cells. In that regime the metaheuristic
@@ -1086,20 +1084,63 @@ the approach and is as useful a result as the positive ones.
 gains least, but the relationship is not monotonic---California at 6.49$\times$ shows a larger gain than the
 United Kingdom at 12.30$\times$---so variability alone does not rank the regions and the shape and timing of
 the daily trough evidently matter too. We therefore report the five points and the boundary case rather than
-fitting a trend to them}\DIFaddend .
-\begin{figure}[H]\centering
-\DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\linewidth]{fig_scalability.png}
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=0.86\linewidth]{fig_regions.png}
-\DIFaddendFL \caption{\DIFdelbeginFL \DIFdelFL{Scalability: carbon reduction }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Seeding gain }\DIFaddendFL (\DIFdelbeginFL \DIFdelFL{left}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{CA-WOA minus standard WOA}\DIFaddendFL ) \DIFdelbeginFL \DIFdelFL{and SLA violations (right) versus task count (50--300)}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{against grid carbon variability}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{mean over }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{1500 tasks, six real
-three-day windows per region, error bars 95\% confidence intervals. All }\DIFaddendFL five \DIFdelbeginFL \DIFdelFL{seeds}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{gains are positive, but the
+fitting a trend to them.
+}\begin{figure}[H]\centering
+\includegraphics[width=0.86\linewidth]{fig_regions.png}
+\caption{\DIFaddFL{Seeding gain (CA-WOA minus standard WOA) against grid carbon variability, 1500 tasks, six real
+three-day windows per region, error bars 95\% confidence intervals. All five gains are positive, but the
 near-flat Mid-Atlantic grid gains least and is the configuration in which CA-WOA is beaten by the best
-competing method}\DIFaddendFL .}\DIFdelbeginFL %DIFDELCMD < \label{fig:scale}
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \label{fig:regions}
-\DIFaddendFL \end{figure}
+competing method.}}\label{fig:regions}
+\end{figure}
 
-\DIFaddbegin \subsection{\DIFadd{Computational cost and convergence}}\label{sec:cost}
+\subsection{\DIFadd{Multiple workload subsets and a second trace}}\label{sec:workloads}
+\DIFadd{Reviewers asked whether the results depend on the particular workload sample drawn.
+Two checks were run. First, four \emph{disjoint} subsets of the Google trace were
+scheduled independently. CA-WOA}\DIFaddend 's \DIFdelbegin \DIFdel{reliability is
+preserved as the workload grows, }\DIFdelend \DIFaddbegin \DIFadd{carbon reduction varies little across them:
+standard deviation 0.13 to 0.59 percentage points depending on configuration, with
+a full range of 86.47 to 89.22\,\% across all subsets and task counts. The result is
+therefore not an artefact of one sample.
+}
+
+\DIFadd{Second, the NASA-iPSC log was used as an independent workload with a genuine 92-day
+arrival process, rather than the 1.54-hour arrival span of the Google trace.
+Absolute carbon reductions are markedly lower there---61.6 to 67.6\,\% against 84 to
+89\,\% on Google---because a real multi-day arrival spread offers far less
+opportunity to shift work into a green slot. This is the more realistic figure and
+we report it as such.
+}
+
+\DIFadd{The ranking, however, is unchanged: CA-WOA is best in all six NASA configurations
+(Table~\ref{tab:nasa}). The SLA contrast is also far starker than on the Google
+trace. Averaged per configuration, PSO misses 52.5 to 63.6\,\% of deadlines, DE 46.3
+to 56.9\,\% and GA 21.2 to 49.9\,\%, while CA-WOA stays between 0.00 and 0.41\,\%.
+The aggressive optimisers are therefore worse on both axes simultaneously on a
+realistic arrival process, }\DIFaddend which is the \DIFdelbegin \DIFdel{property a production scheduler requires. }\DIFdelend \DIFaddbegin \DIFadd{pattern the submitted version claimed but
+could not demonstrate at that scale.
+}
+
+\begin{table}[H]\centering\small
+\caption{NASA-iPSC trace, mean over 10 seeds per configuration. Carbon reductions
+are lower than on the Google trace because a real 92-day arrival process offers
+less shifting opportunity; the ranking is unchanged and the SLA gap widens.}
+\label{tab:nasa}
+\begin{tabular}{lrr}
+\toprule
+Method & Carbon reduction (\%) & SLA violations (\%) \\
+\midrule
+\textbf{CA-WOA} & \textbf{67.58} & \textbf{0.16} \\
+GWO             & 65.95 & 6.48 \\
+HHO             & 65.23 & 0.02 \\
+WOA             & 65.03 & 0.27 \\
+GA              & 63.53 & 35.85 \\
+DE              & 62.34 & 51.64 \\
+PSO             & 61.59 & 58.22 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{\DIFadd{Computational cost and convergence}}\label{sec:cost}
 \DIFadd{Runtime scales linearly in task count. WOA is the cheapest search in the study (1.54~s and 0.99~MB at 500
 tasks, rising to 6.20~s and 4.87~MB at 3000), and GA the most expensive (2.61 to 10.57~s), with HHO close
 behind because of its larger evaluation budget. Peak Python-allocated memory never exceeded 9.6~MB in any of
@@ -1114,15 +1155,19 @@ epochs, but stagnates at 0.2378, which explains its poor carbon and high SLA vio
 \textbf{An important caveat: GA and GWO had not converged at the 120-epoch budget}, requiring 102 and 112
 epochs respectively to stabilise. Their results are therefore lower bounds and this comparison understates
 them. Fig.~\ref{fig:conv} shows the curves.
-}\begin{figure}[H]\centering
-\includegraphics[width=\linewidth]{fig_convergence.png}
-\caption{\DIFaddFL{Convergence at 3000 tasks on 10 hosts, 10 seeds, shaded band one standard deviation. Carbon-aware
+}\DIFaddend \begin{figure}[H]\centering
+\DIFdelbeginFL %DIFDELCMD < \includegraphics[width=\linewidth]{fig_scalability.png}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=\linewidth]{fig_convergence.png}
+\DIFaddendFL \caption{\DIFdelbeginFL \DIFdelFL{Scalability: carbon reduction (left) and SLA violations (right) versus task count (50--300)}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Convergence at 3000 tasks on 10 hosts}\DIFaddendFL , \DIFdelbeginFL \DIFdelFL{mean over five }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{10 }\DIFaddendFL seeds\DIFaddbeginFL \DIFaddFL{, shaded band one standard deviation}\DIFaddendFL . \DIFaddbeginFL \DIFaddFL{Carbon-aware
 seeding starts CA-WOA at roughly half the fitness of standard WOA and stabilises it by epoch~8 against 16.
 PSO flattens early at a poor value rather than converging well. GA and GWO are still improving when the
-budget ends.}}\label{fig:conv}
-\end{figure}
+budget ends.}\DIFaddendFL }\DIFdelbeginFL %DIFDELCMD < \label{fig:scale}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \label{fig:conv}
+\DIFaddendFL \end{figure}
 
-\DIFaddend \subsection{Forecasting}
+\subsection{Forecasting}
 The final component evaluates the carbon-intensity forecaster that makes the scheduler predictive. The
 forecaster is trained and tested on the real UK National Grid carbon-intensity series, roughly 111 days of
 half-hourly readings ($\approx 5{,}300$ slots) in gCO\textsubscript{2}/kWh. The series is split

@@ -865,6 +865,49 @@ near-flat Mid-Atlantic grid gains least and is the configuration in which CA-WOA
 competing method.}\label{fig:regions}
 \end{figure}
 
+\subsection{Multiple workload subsets and a second trace}\label{sec:workloads}
+Reviewers asked whether the results depend on the particular workload sample drawn.
+Two checks were run. First, four \emph{disjoint} subsets of the Google trace were
+scheduled independently. CA-WOA's carbon reduction varies little across them:
+standard deviation 0.13 to 0.59 percentage points depending on configuration, with
+a full range of 86.47 to 89.22\,\% across all subsets and task counts. The result is
+therefore not an artefact of one sample.
+
+Second, the NASA-iPSC log was used as an independent workload with a genuine 92-day
+arrival process, rather than the 1.54-hour arrival span of the Google trace.
+Absolute carbon reductions are markedly lower there---61.6 to 67.6\,\% against 84 to
+89\,\% on Google---because a real multi-day arrival spread offers far less
+opportunity to shift work into a green slot. This is the more realistic figure and
+we report it as such.
+
+The ranking, however, is unchanged: CA-WOA is best in all six NASA configurations
+(Table~\ref{tab:nasa}). The SLA contrast is also far starker than on the Google
+trace. Averaged per configuration, PSO misses 52.5 to 63.6\,\% of deadlines, DE 46.3
+to 56.9\,\% and GA 21.2 to 49.9\,\%, while CA-WOA stays between 0.00 and 0.41\,\%.
+The aggressive optimisers are therefore worse on both axes simultaneously on a
+realistic arrival process, which is the pattern the submitted version claimed but
+could not demonstrate at that scale.
+
+\begin{table}[H]\centering\small
+\caption{NASA-iPSC trace, mean over 10 seeds per configuration. Carbon reductions
+are lower than on the Google trace because a real 92-day arrival process offers
+less shifting opportunity; the ranking is unchanged and the SLA gap widens.}
+\label{tab:nasa}
+\begin{tabular}{lrr}
+\toprule
+Method & Carbon reduction (\%) & SLA violations (\%) \\
+\midrule
+\textbf{CA-WOA} & \textbf{67.58} & \textbf{0.16} \\
+GWO             & 65.95 & 6.48 \\
+HHO             & 65.23 & 0.02 \\
+WOA             & 65.03 & 0.27 \\
+GA              & 63.53 & 35.85 \\
+DE              & 62.34 & 51.64 \\
+PSO             & 61.59 & 58.22 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Computational cost and convergence}\label{sec:cost}
 Runtime scales linearly in task count. WOA is the cheapest search in the study (1.54~s and 0.99~MB at 500
 tasks, rising to 6.20~s and 4.87~MB at 3000), and GA the most expensive (2.61 to 10.57~s), with HHO close
