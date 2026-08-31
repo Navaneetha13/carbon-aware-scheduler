@@ -190,28 +190,36 @@ chk("capacity-model cost min (0.796)", 0.796, ac["Cost_GBP"].min(), tol=0.001)
 chk("capacity-model cost max (0.935)", 0.935, ac["Cost_GBP"].max(), tol=0.001)
 
 
-# --- runtime / memory (pooled over the seven valid grid experiments) ------
-al2 = al[al.method=="WOA"]
-chk("WOA runtime @500", 1.54, al2[al2.N==500]["runtime_s"].mean(), tol=0.005)
-chk("WOA runtime @3000", 6.20, al2[al2.N==3000]["runtime_s"].mean(), tol=0.005)
-chk("WOA memory @500", 0.99, al2[al2.N==500]["peak_mem_mb"].mean(), tol=0.005)
-chk("WOA memory @3000", 4.87, al2[al2.N==3000]["peak_mem_mb"].mean(), tol=0.005)
-ga2 = al[al.method=="GA"]
-chk("GA runtime @500", 2.61, ga2[ga2.N==500]["runtime_s"].mean(), tol=0.005)
-chk("GA runtime @3000", 10.57, ga2[ga2.N==3000]["runtime_s"].mean(), tol=0.005)
-chk("peak memory, max over ALL runs (claimed <9.6 MB)", 9.54, al["peak_mem_mb"].max(), tol=0.06)
-e25 = load("E25"); e25 = e25[(e25.nfe>0) & (e25.method=="WOA")]
-chk("WOA runtime @50 tasks", 0.89, e25[e25.N==50]["runtime_s"].mean(), tol=0.005)
-chk("WOA runtime @300 tasks", 1.24, e25[e25.N==300]["runtime_s"].mean(), tol=0.005)
-gb2 = load("GABUG")
-for n_, c_ in ((500,82.80),(1500,85.65),(3000,86.83)):
-    chk("GABUG BaseGA carbon N=%d"%n_, c_,
-        gb2[(gb2.method=="GA")&(gb2.N==n_)]["carbon_red_vs_naive_%"].mean(), tol=0.02)
-for n_, c_ in ((500,80.21),(1500,85.29),(3000,86.45)):
-    chk("GABUG OriginalGA carbon N=%d"%n_, c_,
-        gb2[(gb2.method=="GA_OriginalGA")&(gb2.N==n_)]["carbon_red_vs_naive_%"].mean(), tol=0.02)
-for l_, v_ in (("HHO",11),("DE",51),("PSO",5)):
-    chkeq("%s epochs to 1%%"%l_, v_, res[l_][2])
+# --- Section 6.2 algorithm comparison table (E1 at N=3000, M=10) ---
+e1b = load("E1"); e1b = e1b[(e1b.nfe>0) & (e1b.N==3000) & (e1b.M==10)]
+for lb, c_, s_ in (("CA-WOA",87.58,0.13),("HHO",87.37,0.00),("WOA",87.15,0.57),
+                   ("GWO",87.11,7.02),("GA",86.81,44.28),("PSO",86.70,61.48),("DE",86.69,54.04)):
+    g_ = e1b[e1b.label==lb]
+    chk("6.2 %s carbon"%lb, c_, g_["carbon_red_vs_naive_%"].mean(), tol=0.006)
+    chk("6.2 %s SLA"%lb, s_, g_["sla_%"].mean(), tol=0.006)
+chk("6.2 CA-WOA vs WOA gain", 0.44,
+    e1b[e1b.label=="CA-WOA"]["carbon_red_vs_naive_%"].mean()-e1b[e1b.label=="WOA"]["carbon_red_vs_naive_%"].mean(), tol=0.006)
+# --- capacity table published-run values ---
+w4 = pd.read_csv("../results/week4_full_comparison.csv").set_index("Method")
+chk("tab:capacity HHO 82.27", 82.27, w4.loc["HHO","Carbon_red_%"], tol=0.005)
+chk("tab:capacity HHO util 83.1", 83.1, w4.loc["HHO","Util_%"], tol=0.05)
+chk("tab:capacity CA-WOA util 84.0", 84.0, w4.loc["CA-WOA","Util_%"], tol=0.05)
+chk("tab:capacity greedy util 75.2", 75.2, w4.loc["Carbon-aware greedy","Util_%"], tol=0.05)
+# --- forecasting: originals and Transformer ---
+af = pd.read_csv("../results/advanced_forecast_comparison.csv").set_index("Unnamed: 0")
+chk("orig ensemble MAE 3.39", 3.39, af.loc["Ensemble (CNN-LSTM+GRU+GBR)","MAE"], tol=0.006)
+chk("orig LSTM MAE 3.87", 3.87, af.loc["LSTM","MAE"], tol=0.006)
+tf = pd.read_csv("../results/transformer_comparison.csv").set_index("Unnamed: 0")
+chk("Transformer MAE 9.27", 9.27, tf.loc["Transformer (attention)","MAE"], tol=0.006)
+chk("GradBoost MAE 3.51", 3.51, tf.loc["Gradient Boosting","MAE"], tol=0.006)
+# --- corrected coupling numbers now in the paper ---
+fcx = pd.read_csv("F_coupling_summary.csv")
+one = fcx[(fcx.N==1000)&(fcx.M==10)].set_index("scheduler")["carbon_kg"]
+chk("coupling forecast 1.070", 1.070, one["forecast"], tol=0.001)
+chk("coupling reactive 1.224", 1.224, one["reactive"], tol=0.001)
+chk("coupling oracle 1.024", 1.024, one["oracle"], tol=0.001)
+chk("coupling capture 76.8", 76.8,
+    100*(one["forecast"]-one["reactive"])/(one["oracle"]-one["reactive"]), tol=0.06)
 
 # ---------------------------------------------------------------- report
 bad = [r for r in R if not r[0]]

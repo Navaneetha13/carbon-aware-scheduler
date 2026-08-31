@@ -1,7 +1,7 @@
 % =====================================================================
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL main.tex.submitted-backup   Wed Aug 26 17:44:53 2026
-%DIF ADD main.tex                    Mon Aug 31 14:42:36 2026
+%DIF ADD main.tex                    Mon Aug 31 15:07:07 2026
 %  MSc Research Project - IEEE-style single-column report (NCI structure)
 %  Navaneetha Thalakokkula (23213914) - MSc Cloud Computing, NCI
 %  HOW TO USE: create a Blank Project in Overleaf, delete main.tex content,
@@ -862,17 +862,56 @@ GA (\texttt{BaseGA}) & $p_c=0.95$, $p_m=0.025$, tournament sel., uniform crossov
 \DIFaddend 
 
 \subsection{Algorithm comparison (temporal model)}
-The first experiment isolates the benefit of carbon-aware \emph{timing} by scheduling a fixed set of real
-Google tasks under the temporal model, comparing CA-WOA against the FIFO baseline and the standard
-metaheuristics. Fig.~\ref{fig:temporal} reports carbon reduction and SLA violations. CA-WOA achieves an
-11.3\% carbon reduction while keeping SLA violations at 0\%. Standard WOA, by contrast, achieves only 1.2\%,
-confirming that the carbon-aware seeding, rather than the WOA operators alone, drives the improvement. Several
-algorithms reach a numerically higher carbon reduction, with PSO, DE and GA reaching 19--20\%, but only by
-violating deadlines heavily (20.0\%, 21.7\% and 56.7\% of tasks respectively), which makes them unusable in
+The first experiment \DIFdelbegin \DIFdel{isolates the benefit of carbon-aware \emph{timing} by scheduling a fixed set of real
+Google tasks under the temporal model, comparing }\DIFdelend \DIFaddbegin \DIFadd{compares }\DIFaddend CA-WOA against the FIFO baseline and the \DIFdelbegin \DIFdel{standard
+metaheuristics}\DIFdelend \DIFaddbegin \DIFadd{five standard metaheuristics at the
+largest workload, 3000 tasks on 10 hosts, over 30 seeds}\DIFaddend . Fig.~\ref{fig:temporal} reports carbon reduction and
+\DIFdelbegin \DIFdel{SLA violations. }\DIFdelend \DIFaddbegin \DIFadd{deadline violations, and Table~\ref{tab:alg} gives the figures.
+}
+
+\DIFaddend CA-WOA achieves \DIFdelbegin \DIFdel{an
+11.3\% carbon reductionwhile keeping SLA violations at 0}\DIFdelend \DIFaddbegin \DIFadd{the highest carbon reduction, $87.58 \pm 0.10$\%, while holding deadline violations to
+0.13}\DIFaddend \%. Standard WOA \DIFdelbegin \DIFdel{, by contrast, achieves only 1.2\% ,
+confirming that the }\DIFdelend \DIFaddbegin \DIFadd{reaches 87.15\% with 0.57\% violations, so }\DIFaddend carbon-aware seeding \DIFdelbegin \DIFdel{, rather than the WOA operators alone, drives the
+improvement. Several
+algorithms reach a numerically higher carbon reduction, with }\DIFdelend \DIFaddbegin \DIFadd{contributes $+0.44$
+percentage points here---a small margin, but consistent across seeds and statistically significant, and the
+regime analysis in Section~\ref{sec:milp} explains why it cannot be large: without a binding capacity
+constraint the problem is close to separable.
+}
+
+\DIFadd{The important contrast is on the second axis. }\DIFaddend PSO, DE and GA \DIFdelbegin \DIFdel{reaching 19--20\%, but only by
+violating deadlines heavily (20.0\% }\DIFdelend \DIFaddbegin \DIFadd{reach \emph{lower} carbon reduction than CA-WOA
+\emph{and} miss 61.5\%, 54.0\% and 44.3\% of deadlines respectively}\DIFaddend , \DIFdelbegin \DIFdel{21.7\% and 56.7\% of tasks respectively), which makes them unusable in
 practice; GWO likewise trades a 6.7\% SLA violation for its 10.7\% reduction. Among the methods that hold SLA
-violations at exactly zero, CA-WOA is the strongest, marginally ahead of HHO (11.1\%) and far ahead of
+violations at exactly zero, CA-WOA is
+the strongest, marginally ahead of HHO (11.1\% ) and far ahead of
 standard WOA.
-\begin{figure}[H]\centering
+}\DIFdelend \DIFaddbegin \DIFadd{so they are worse on both measures at
+once rather than trading one for the other. GWO misses 7.0\% of deadlines for 87.11\% carbon. Only HHO is
+competitive on both, at 87.37\% with 0.001\% violations---but it does so with roughly 1.84$\times$ the
+evaluation budget (Section~\ref{sec:config}), so that comparison is not like-for-like.
+}
+
+\begin{table}[H]\centering\footnotesize
+\caption{Algorithm comparison at 3000 tasks on 10 hosts, mean $\pm$ standard deviation over 30 seeds. The
+aggressive optimisers are worse on both axes simultaneously; HHO is competitive but on a larger evaluation
+budget.}\label{tab:alg}
+\begin{tabular}{lrr}
+\toprule
+Method & Carbon reduction (\%) & SLA violations (\%) \\
+\midrule
+\textbf{CA-WOA} & $\mathbf{87.58 \pm 0.10}$ & $\mathbf{0.13 \pm 0.11}$ \\
+HHO             & $87.37 \pm 0.10$ & $0.00 \pm 0.01$ \\
+WOA             & $87.15 \pm 0.08$ & $0.57 \pm 0.54$ \\
+GWO             & $87.11 \pm 0.08$ & $7.02 \pm 0.54$ \\
+GA              & $86.81 \pm 0.11$ & $44.28 \pm 0.48$ \\
+PSO             & $86.70 \pm 0.10$ & $61.48 \pm 0.57$ \\
+DE              & $86.69 \pm 0.09$ & $54.04 \pm 1.65$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+\DIFaddend \begin{figure}[H]\centering
 \includegraphics[width=\linewidth]{fig_temporal_comparison.png}
 \caption{\DIFdelbeginFL \DIFdelFL{CA-WOA versus the FIFO baseline and standard metaheuristics }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Algorithm comparison at 3000 tasks on 10 hosts }\DIFaddendFL under the \DIFdelbeginFL \DIFdelFL{temporal }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{published }\DIFaddendFL model\DIFaddbeginFL \DIFaddFL{, 30 seeds}\DIFaddendFL : \DIFaddbeginFL \DIFaddFL{(a) }\DIFaddendFL carbon
 reduction \DIFaddbeginFL \DIFaddFL{against the naive FIFO baseline and }\DIFaddendFL (\DIFdelbeginFL \DIFdelFL{left}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{b}\DIFaddendFL ) \DIFdelbeginFL \DIFdelFL{and SLA }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{deadline }\DIFaddendFL violations\DIFaddbeginFL \DIFaddFL{. Error bars are 95\% confidence
@@ -926,7 +965,7 @@ mechanism. Consolidation accounts for 80.50 of the 83.25 percentage points.}\lab
 Naive FIFO (reference)       & 0.00           & 0.0           & --             & -- \\
 Energy-aware (consolidation) & 80.50          & 0.0           & 75.2           & consolidation \\
 Carbon-aware greedy          & 82.56          & 0.0           & 75.2           & $+2.06$ timing \\
-HHO                          & 82.30          & 0.0           & 83.1           & search \\
+HHO                          & 82.27          & 0.0           & 83.1           & search \\
 \textbf{CA-WOA}              & \textbf{83.25} & \textbf{0.0}  & \textbf{84.0}  & $+0.69$ over greedy \\
 \bottomrule
 \end{tabular}
@@ -1200,14 +1239,33 @@ horizon tested---which reverses the argument originally drawn from CarbonCast. T
 12-hour horizon, where the ensemble achieves MAE 26.09 $\pm$ 0.48~gCO\textsubscript{2}/kWh against 37.03 for a
 seasonal-naive baseline (MASE 0.59), a 30\% improvement over the strongest naive predictor. Gradient boosting
 is the most reliable single component, with standard deviation 0.00--0.04 across repeats. The original figure
-}\DIFaddend of roughly 12\% \DIFaddbegin \DIFadd{is therefore withdrawn}\DIFaddend ,
-as shown in Fig.~\ref{fig:forecast}, where the ensemble tracks the actual curve more closely. Coupling the
-forecast into the scheduler makes it predictive rather than reactive: scheduling against the forecast yields
-0.795~kg~CO\textsubscript{2} versus 0.831~kg for reactive scheduling on current intensity. A perfect-foresight
-oracle reaches 0.785~kg, so the forecast-driven scheduler captures 78\% of the saving that perfect knowledge
-of the future would allow. For completeness, a Transformer forecaster was
-also tested but performed markedly worse (MAE 9.27), consistent with reports that attention models underperform
-on smooth, small time series; this negative result is reported rather than omitted.
+}\DIFaddend of roughly 12\% \DIFdelbegin \DIFdel{,
+as shown in }\DIFdelend \DIFaddbegin \DIFadd{is therefore withdrawn. }\DIFaddend Fig.~\ref{fig:forecast} \DIFdelbegin \DIFdel{, where the ensemble tracks the actual curve more closely.
+}\DIFdelend \DIFaddbegin \DIFadd{reports the accuracy of every model against
+horizon, together with the three naive baselines.
+}
+
+\DIFaddend Coupling the forecast into the scheduler makes it predictive rather than reactive\DIFdelbegin \DIFdel{: scheduling
+against the forecast yields 0.795}\DIFdelend \DIFaddbegin \DIFadd{, and the effect is measured
+at an identical optimisation budget of 4}{\DIFadd{,}}\DIFadd{840 objective evaluations. At 1000 tasks on 10 hosts, scheduling
+against a 12-hour-ahead forecast yields 1.070}\DIFaddend ~kg~CO\textsubscript{2} \DIFdelbegin \DIFdel{versus 0.831}\DIFdelend \DIFaddbegin \DIFadd{against 1.224}\DIFaddend ~kg for \DIFaddbegin \DIFadd{purely }\DIFaddend reactive
+scheduling on \DIFdelbegin \DIFdel{current intensity. A }\DIFdelend \DIFaddbegin \DIFadd{the current intensity, while a }\DIFaddend perfect-foresight oracle reaches \DIFdelbegin \DIFdel{0.785~kg, so the forecast-driven scheduler captures 78}\DIFdelend \DIFaddbegin \DIFadd{1.024~kg. The forecast therefore
+recovers 76.8}\DIFaddend \% of the \DIFdelbegin \DIFdel{saving }\DIFdelend \DIFaddbegin \DIFadd{advantage }\DIFaddend that perfect knowledge of the future would \DIFdelbegin \DIFdel{allow.
+}\DIFdelend \DIFaddbegin \DIFadd{confer; across the three
+configurations tested the range is 73--89\%.
+}
+
+\DIFadd{\textbf{An earlier version of this analysis reported 78\%, computed from a different and smaller
+configuration, and a companion figure quoted 99--100\%.} The latter divided the two total carbon reductions,
+both of which are dominated by the consolidation baseline, and would therefore have flattered any forecast
+regardless of its accuracy. The quantity reported here is the fraction of the \emph{advantage over reactive
+scheduling} that the forecast recovers, which is the meaningful comparison.
+}
+
+\DIFaddend For completeness, a Transformer forecaster was also tested but performed markedly worse (MAE
+9.27\DIFaddbegin \DIFadd{~gCO\textsubscript{2}/kWh against 3.51 for gradient boosting on the same single-run protocol}\DIFaddend ), consistent
+with reports that attention models underperform on smooth, \DIFdelbegin \DIFdel{small }\DIFdelend \DIFaddbegin \DIFadd{short }\DIFaddend time series; this negative result is
+reported rather than omitted.
 \begin{figure}[H]\centering
 \includegraphics[width=\linewidth]{fig_forecast_comparison.png}
 \caption{\DIFdelbeginFL \DIFdelFL{Held-out carbon-intensity forecast: the actual series compared }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Carbon-intensity forecasting }\DIFaddendFL with \DIFdelbeginFL \DIFdelFL{the baseline LSTM }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{direct multi-step prediction, mean of five repeats, error bars one
