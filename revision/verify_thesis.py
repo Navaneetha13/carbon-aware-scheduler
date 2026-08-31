@@ -221,6 +221,20 @@ chk("coupling oracle 1.024", 1.024, one["oracle"], tol=0.001)
 chk("coupling capture 76.8", 76.8,
     100*(one["forecast"]-one["reactive"])/(one["oracle"]-one["reactive"]), tol=0.06)
 
+
+# --- forecast degradation (R2#8 / s4#10) ---
+fd = pd.read_csv("F_degradation_summary.csv")
+d3 = fd[(fd.N==3000)&(fd.M==10)]
+for tgt, cr, gp in ((0,89.40,0.00),(5,89.25,0.15),(10,89.07,0.33),
+                    (20,88.85,0.55),(40,88.21,1.19),(80,87.85,1.55)):
+    r_ = d3[d3.target_mae==tgt]
+    chk("degrade MAE~%d carbon"%tgt, cr, r_["carbon_red_mean"].iloc[0], tol=0.006)
+    chk("degrade MAE~%d gap"%tgt, gp, r_["gap_pp"].iloc[0], tol=0.006)
+chk("degrade realised MAE 9.9", 9.912, d3[d3.target_mae==10]["realised_mae"].iloc[0], tol=0.001)
+chk("degrade realised MAE 71.6", 71.556, d3[d3.target_mae==80]["realised_mae"].iloc[0], tol=0.001)
+chk("degrade negative gap at N=1000", -0.114,
+    fd[(fd.N==1000)&(fd.target_mae==5)]["gap_pp"].iloc[0], tol=0.006)
+
 # ---------------------------------------------------------------- report
 bad = [r for r in R if not r[0]]
 print("%-52s %-12s %-12s %s" % ("CLAIM", "IN THESIS", "IN DATA", ""))

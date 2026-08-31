@@ -1005,6 +1005,38 @@ both of which are dominated by the consolidation baseline, and would therefore h
 regardless of its accuracy. The quantity reported here is the fraction of the \emph{advantage over reactive
 scheduling} that the forecast recovers, which is the meaningful comparison.
 
+\paragraph{Sensitivity to forecast error.} Because a forecast-driven scheduler is only as good as its
+forecast, controlled Gaussian error was injected into the carbon signal, the schedule was chosen on the
+\emph{noisy} signal, and the result was then scored against the \emph{true} signal. Ten seeds were run at each
+error level. Table~\ref{tab:degrade} reports the outcome at 3000 tasks on 10 hosts.
+
+The degradation is gradual rather than sharp. A realised MAE of 9.9~gCO\textsubscript{2}/kWh---already
+noticeably worse than the 12-hour ensemble achieves in practice---costs only 0.33 percentage points of carbon
+reduction, and even a severe 71.6~gCO\textsubscript{2}/kWh error, roughly two thirds of the mean UK intensity,
+costs 1.55 points. Scheduling on an imperfect forecast is therefore robust: the method does not require an
+accurate forecast so much as a forecast that ranks slots roughly correctly, which is a much weaker
+requirement. At the smallest error levels the noisy schedule occasionally scores marginally \emph{above} the
+perfect-information schedule (a gap of $-0.11$ points at 1000 tasks), which is a sampling artefact of the
+greedy tie-breaking rather than a real gain, and is reported as measured.
+
+\begin{table}[H]\centering\small
+\caption{Sensitivity of carbon reduction to forecast error at 3000 tasks on 10 hosts, mean over 10 seeds. The
+schedule is chosen on a noisy carbon signal and scored on the true one; the gap is the loss relative to
+scheduling with perfect information.}\label{tab:degrade}
+\begin{tabular}{rrrr}
+\toprule
+Realised MAE (gCO\textsubscript{2}/kWh) & Carbon reduction (\%) & s.d. & Gap (points) \\
+\midrule
+0.0  & 89.40 & 0.00 & 0.00 \\
+5.0  & 89.25 & 0.10 & 0.15 \\
+9.9  & 89.07 & 0.19 & 0.33 \\
+19.8 & 88.85 & 0.30 & 0.55 \\
+38.9 & 88.21 & 0.47 & 1.19 \\
+71.6 & 87.85 & 0.42 & 1.55 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 For completeness, a Transformer forecaster was also tested but performed markedly worse (MAE
 9.27~gCO\textsubscript{2}/kWh against 3.51 for gradient boosting on the same single-run protocol), consistent
 with reports that attention models underperform on smooth, short time series; this negative result is

@@ -431,9 +431,15 @@ not unrepresentative.}
 Test forecast degradation and quantify scheduling performance under increasing
 forecast error.
 \end{revcomment}
-\rsp{Controlled error is injected into the carbon signal at increasing magnitudes and
-the resulting scheduling penalty is measured, so the sensitivity of carbon
-reduction to forecast quality is quantified directly rather than inferred.}
+\rsp{Controlled Gaussian error is injected into the carbon signal, the schedule is chosen on the
+\emph{noisy} signal, and the result is scored against the \emph{true} signal, over ten seeds at each of six
+error levels. The degradation is gradual rather than sharp: a realised MAE of 9.9~gCO\textsubscript{2}/kWh
+costs only 0.33 percentage points of carbon reduction, and even a severe 71.6~gCO\textsubscript{2}/kWh
+error---roughly two thirds of the mean United Kingdom intensity---costs 1.55 points. The method therefore does
+not require an accurate forecast so much as one that ranks slots roughly correctly, which is a weaker
+requirement. At the smallest error levels the noisy schedule occasionally scores marginally above the
+perfect-information schedule; this is a sampling artefact of greedy tie-breaking rather than a real gain, and
+is reported as measured.}
 \rwhere{Section~6.15 (forecasting).}
 
 \begin{revcomment}{Comment R2.21}
