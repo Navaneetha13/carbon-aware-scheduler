@@ -21,4 +21,5 @@ literature/*.pdf
 
 # ---- result images and model binaries (regenerable) ----
 results/*.png
+!results/*.xlsx
 *.keras
