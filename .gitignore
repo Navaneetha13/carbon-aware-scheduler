@@ -1,34 +1,24 @@
-# Python
+# ---- environments and caches ----
 .venv/
 __pycache__/
 *.pyc
+.env
 
-# Jupyter
-.ipynb_checkpoints/
+# ---- manuscript: lives in Overleaf, not here ----
+*.tex
+*.md
+!requirements*.txt
 
-# Large/raw data that the notebooks re-download or that isn't needed in the repo
-*.zip
-data/workload/bitbrains_sample/
-data/workload/NASA.swf.gz
+# ---- generated or non-code artefacts ----
+*.log
+*.html
+*.pptx
+figures_REVISED/
+literature/*.pdf
 
-# Personal prep docs (not for the public repo)
-PRESENTATION_GUIDE.md
-WHAT_WE_ACHIEVED.md
-
-# OS
+# ---- macOS ----
 .DS_Store
-This_Week_Explanation.docx
-THIS_WEEK_EXPLANATION.md
-src/battery_solar.py
-data/carbon/solar_3day.json
-results/battery_solar.png
-LSTM_FORECASTING_EXPLANATION.md
-DATASETS_AND_REFERENCES.md
-PROJECT_PLAN.md
-PROJECT_TIMETABLE.md
-THIS_WEEK_ENSEMBLE_EXPLANATION.md
-RESULTS_SUMMARY.md
-src/publication_sweep.py
-results/sweep_temporal.csv
-results/sweep_capacity.csv
-results/sweep_preview_capacity.png
+
+# ---- result images and model binaries (regenerable) ----
+results/*.png
+*.keras

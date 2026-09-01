@@ -1,13 +1,28 @@
-"""Check every load-bearing number in the compiled PDF against the raw CSVs."""
+"""Recompute every load-bearing number in the manuscript from the raw per-seed CSVs.
+
+Run from anywhere:   python verify_thesis.py
+Optionally also check the values appear in the compiled PDF by exporting a text dump:
+                     THESIS_PDF_TEXT=thesis.txt python verify_thesis.py
+"""
 import re, sys, os
 import numpy as np, pandas as pd
 from scipy import stats
-sys.path.insert(0, "/Users/durga/carbon-aware-scheduler/revision")
-os.chdir("/Users/durga/carbon-aware-scheduler/revision")
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+os.chdir(HERE)
 import core as K
 
-PDF = open("/tmp/pdfclean.txt", encoding="latin-1").read()
+_TXT = os.environ.get("THESIS_PDF_TEXT", "")
+PDF = ""
+if _TXT and os.path.exists(_TXT):
+    PDF = open(_TXT, encoding="latin-1", errors="replace").read()
+
+
 def in_pdf(*frags):
+    """True if every fragment appears in the supplied PDF text; False if none supplied."""
+    if not PDF:
+        return False
     return all(f.replace(" ", "") in PDF.replace(" ", "") for f in frags)
 
 L = lambda d: np.where((d.method=="WOA") & (d.init=="carbon"), "CA-WOA", d.method)
